@@ -58,6 +58,10 @@ def table_page():
 def mail_page():
     return render_template('mail.html')
 
+@app.route('/templates')
+def templates_page():
+    return render_template('templates.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
