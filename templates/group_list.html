@@ -3,42 +3,31 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Groups Members</h1>
+    <h1 class="h3 mb-2 text-gray-800">Groups</h1>
+    <p class="mb-4">Send mail to groups.</p>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <div class="dropdown">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#add">
-                    Add Members
+    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addgroup">
+                    Add Group
                 </button>
                 <!-- Modal -->
-                <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
+                <div class="modal fade" id="addgroup" tabindex="-1" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Add Members</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add New Group</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form action="/new/group" method="post">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-secondary" type="button">Choose Group</button>
-                                        </div>
-                                        <select class="custom-select" id="inputGroupSelect03">
-                                  <option selected>Choose...</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select>
+                                        <label for="exampleInputEmail1">Group Name</label>
+                                        <input type="text" class="form-control" name="groupname" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Group Name...">
+                                        <small id="emailHelp" class="form-text text-muted">This will be your new group name. Ex Newsletter...</small>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -50,37 +39,47 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="auto" cellspacing="0">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>EMAIL</th>
-                            <th>STATUS</th>
-                            <th>DELETE</th>
+                            <th>GROUP NAME</th>
+                            <th>DATE CREATED</th>
+                            <th style="width: 10%;">DELETE</th>
+                            <th>SEND MAIL</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>EMAIL</th>
-                            <th>STATUS</th>
+                            <th>GROUP NAME</th>
+                            <th>DATE CREATED</th>
                             <th>DELETE</th>
+                            <th>SEND MAIL</th>
                         </tr>
                     </tfoot>
                     <tbody>
 {#                                    Start loop#}
 {% for post in post %}
                         <tr>
-                            <td>{{ post.id}}</td>
-                            <td>{{ post.email }}</td>
-                            <td>{{ post.status }}</td>
+                        <td>{{ post.id }}</td>
                             <td>
-                                <a href="/delete/subscriber/{{ post.id }}" class="btn btn-danger btn-circle">
+                                <a style="text-decoration: none;" href="/view/subscribers/{{ post.id }}">{{ post.name }}</a></td>
+                            <td>{{ post.date }}</td>
+                            <td>
+                                <a href="/delete/group/{{ post.id }}" class="btn btn-danger btn-circle">
                                     <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-success btn-circle">
+                                    <span class="icon text-white-50">
+                                                        <i style="color: white" class="fas fa-paper-plane"></i>
+                                                    </span>
+{#                                    <span class="text">SEND</span>#}
                                 </a>
                             </td>
                         </tr>

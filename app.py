@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 # TODO: USE JSON TO STORE URI & OTHER IMP STUFF
 
@@ -13,6 +14,8 @@ app = Flask(__name__)
 app.secret_key = "76^)(HEY,BULK-MAILER-HERE!)(skh390880213%^*&%6h&^&69lkjw*&kjh"
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///bulkmailer.db"
 db = SQLAlchemy(app)
+x = datetime.now()
+time = x.strftime("%c")
 
 class Groups(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -54,14 +57,31 @@ def login_page():
 def register_page():
     return render_template('register.html')
 
-
 @app.route('/forgot-password.html')
 def forgot_page():
     return render_template('forgot-password.html')
 
-@app.route('/tables.html')
-def table_page():
-    return render_template('tables.html')
+@app.route('/view/groups')
+def group_page():
+    post = Groups.query.order_by(Groups.id).all()
+    print(time)
+    return render_template('group_list.html', post=post)
+
+@app.route('/view/subscribers/<string:number>', methods=['GET', 'POST'])
+def subscribers_page(number):
+    post = Subscribers.query.filter_by(gid=number).all()
+    # print(post)
+    return render_template('group_members.html', post=post)
+
+@app.route('/new/group', methods=['GET', 'POST'])
+def submit_new_group():
+    if(request.method=='POST'):
+        group_name = request.form.get('groupname')
+        entry = Groups(name=group_name, date=time)
+        db.session.add(entry)
+        db.session.commit()
+        # flash("New group added successfully!", "success")
+    return redirect('/view/groups')
 
 @app.route('/mail.html')
 def mail_page():
