@@ -50,6 +50,10 @@ def dashboard_page():
 def login_page():
     return render_template('login.html')
 
+@app.route('/register.html')
+def register_page():
+    return render_template('register.html')
+
 @app.route('/tables.html')
 def table_page():
     return render_template('tables.html')
