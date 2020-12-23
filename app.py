@@ -54,6 +54,11 @@ def login_page():
 def register_page():
     return render_template('register.html')
 
+
+@app.route('/forgotpassword.html')
+def forgot_page():
+    return render_template('forgot-password.html')
+
 @app.route('/tables.html')
 def table_page():
     return render_template('tables.html')
