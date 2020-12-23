@@ -62,7 +62,7 @@ def mail_page():
 def templates_page():
     return render_template('templates.html')
 
-@app.route('/templates/group_members.html')
+@app.route('/group_members.html')
 def group_members():
     return render_template('group_members.html')
 
