@@ -66,13 +66,14 @@ def table_page():
 @app.route('/mail.html')
 def mail_page():
     return render_template('mail.html')
-    late('templates.html')
 
 @app.route('/group_members.html')
 def group_members():
     return render_template('group_members.html')
 
+@app.errorhandler(404)
 def page_not_found(e):
+    # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
