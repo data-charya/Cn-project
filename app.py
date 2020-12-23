@@ -46,22 +46,25 @@ class Organization(db.Model):
 def dashboard_page():
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login.html')
 def login_page():
     return render_template('login.html')
 
-@app.route('/tables')
+@app.route('/tables.html')
 def table_page():
     return render_template('tables.html')
 
-@app.route('/mail')
+@app.route('/mail.html')
 def mail_page():
     return render_template('mail.html')
 
-@app.route('/templates')
+@app.route('/templates.html')
 def templates_page():
     return render_template('templates.html')
 
+@app.route('/templates/group_members.html')
+def group_members():
+    return render_template('group_members.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
