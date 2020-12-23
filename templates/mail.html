@@ -21,7 +21,7 @@
                                     <form>
                                         <div class="form-group">
                                             <div class="input-group mb-3" style="width: 70%;">
-                                                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" required>
                                                 <div class="input-group-append">
                                                   <span class="input-group-text" id="basic-addon2">@bulkmailer.cf</span>
                                                 </div>
@@ -30,21 +30,31 @@
                                         </div>
                                         <div class="form-group" style="width: 70%;">
                                           <label for="exampleInputPassword1">Subject</label>
-                                          <input type="text" class="form-control" id="exampleInputtext">
+                                          <input type="text" class="form-control" id="exampleInputtext" required>
                                         </div>
 
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              Choose Templates
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <a class="dropdown-item" href="#">Buisness Template 1</a>
-                                              <a class="dropdown-item" href="#">Buisness Template 2</a>
-                                              <a class="dropdown-item" href="#">Buisness Template 3</a>
-                                              <a class="dropdown-item" href="#">Buisness Template 4</a>
-                                              <a class="dropdown-item" href="#">Buisness Template 5</a>
-                                              <a class="dropdown-item" href="#">Buisness Template 6</a>
+                                        <div class="input-group mb-3"  style="width:60%">
+                                            <div class="input-group-prepend">
+                                              <label class="input-group-text" for="inputGroupSelect01">Choose Template</label>
                                             </div>
+                                            <select class="custom-select" id="inputGroupSelect01">
+                                              <option selected>Choose...</option>
+                                              <option value="1">One</option>
+                                              <option value="2">Two</option>
+                                              <option value="3">Three</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="input-group mb-3"  style="width:60%">
+                                            <div class="input-group-prepend">
+                                              <label class="input-group-text" for="inputGroupSelect01">Choose Group</label>
+                                            </div>
+                                            <select class="custom-select" id="inputGroupSelect01">
+                                              <option selected>Choose...</option>
+                                              <option value="1">One</option>
+                                              <option value="2">Two</option>
+                                              <option value="3">Three</option>
+                                            </select>
                                         </div>
 
                                         <br>
@@ -66,24 +76,7 @@
                                 <div class="card-body">
                                     <h1 class="h3 mb-2 text-primary-800 font-weight-bold" style="text-align: center;color: #605bc2;">Mailing Groups</h1>
                                     <img class="img-fluid " style="width: 100%;" src="/static/img/mail.png" alt="">
-                                
-                                    <div class="container mx-auto" style="padding-bottom: 30px;">
-                                        <center>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              Choose Group
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <a class="dropdown-item" href="#">Group 1</a>
-                                              <a class="dropdown-item" href="#">Group 2</a>
-                                              <a class="dropdown-item" href="#">Group 3</a>
-                                              <a class="dropdown-item" href="#">Group 4</a>
-                                              <a class="dropdown-item" href="#">Group 5</a>
-                                              <a class="dropdown-item" href="#">Group 6</a>
-                                            </div>
-                                        </div>
-                                        </center>
-                                    </div>
+                                </form>
                                 </div>
                             </div>
                         </div>
