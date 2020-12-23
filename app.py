@@ -57,10 +57,7 @@ def table_page():
 @app.route('/mail.html')
 def mail_page():
     return render_template('mail.html')
-
-@app.route('/templates.html')
-def templates_page():
-    return render_template('templates.html')
+    late('templates.html')
 
 @app.route('/group_members.html')
 def group_members():
