@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 # import json
 #
-# with open('config.json', 'r') as c:
+# with open('config.json', 'r') as c:pip
 #     json = json.load(c)["json"]
 
 
