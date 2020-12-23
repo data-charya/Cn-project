@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block body %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Mail</h1>
+                    <p class="mb-4">Send mails 
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <div class="col-xl-8 col-lg-7">
+
+                            <!-- Mailing area -->
+                            <div class="card shadow mb-4" style="width: 80%;">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Send Bulk Mails</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <div class="input-group mb-3" style="width: 70%;">
+                                                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                <div class="input-group-append">
+                                                  <span class="input-group-text" id="basic-addon2">@bulkmailer.cf</span>
+                                                </div>
+                                            </div>
+                                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                        </div>
+                                        <div class="form-group" style="width: 70%;">
+                                          <label for="exampleInputPassword1">Subject</label>
+                                          <input type="text" class="form-control" id="exampleInputtext">
+                                        </div>
+
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Choose Templates
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                              <a class="dropdown-item" href="#">Buisness Template 1</a>
+                                              <a class="dropdown-item" href="#">Buisness Template 2</a>
+                                              <a class="dropdown-item" href="#">Buisness Template 3</a>
+                                              <a class="dropdown-item" href="#">Buisness Template 4</a>
+                                              <a class="dropdown-item" href="#">Buisness Template 5</a>
+                                              <a class="dropdown-item" href="#">Buisness Template 6</a>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Replace with summernote"></textarea>
+                                        </div>
+
+                                        <div class="form-group form-check">
+                                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                      </form>
+                                </div>
+                            </div>
+                        
+
+                        </div>
+
+                        <!-- Donut Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    Styling for the donut chart can be found in the
+                                    <code>/js/demo/chart-pie-demo.js</code> file.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+{% endblock %}

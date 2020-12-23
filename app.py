@@ -54,6 +54,10 @@ def login_page():
 def table_page():
     return render_template('tables.html')
 
+@app.route('/mail')
+def mail_page():
+    return render_template('mail.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
