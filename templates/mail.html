@@ -13,7 +13,7 @@
                         <div class="col-xl-8 col-lg-7">
 
                             <!-- Mailing area -->
-                            <div class="card shadow mb-4" style="width: 80%;">
+                            <div class="card shadow mb-4" style="width: 90%;">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Send Bulk Mails</h6>
                                 </div>
@@ -52,10 +52,6 @@
                                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Replace with summernote"></textarea>
                                         </div>
 
-                                        <div class="form-group form-check">
-                                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                        </div>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                       </form>
                                 </div>
@@ -66,19 +62,28 @@
 
                         <!-- Donut Chart -->
                         <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
-                                </div>
-                                <!-- Card Body -->
+                            <div class="card shadow mb-4" style="width: auto;">
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4">
-                                        <canvas id="myPieChart"></canvas>
+                                    <h1 class="h3 mb-2 text-primary-800 font-weight-bold" style="text-align: center;color: #605bc2;">Mailing Groups</h1>
+                                    <img class="img-fluid " style="width: 100%;" src="/static/img/mail.png" alt="">
+                                
+                                    <div class="container mx-auto" style="padding-bottom: 30px;">
+                                        <center>
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Choose Group
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                              <a class="dropdown-item" href="#">Group 1</a>
+                                              <a class="dropdown-item" href="#">Group 2</a>
+                                              <a class="dropdown-item" href="#">Group 3</a>
+                                              <a class="dropdown-item" href="#">Group 4</a>
+                                              <a class="dropdown-item" href="#">Group 5</a>
+                                              <a class="dropdown-item" href="#">Group 6</a>
+                                            </div>
+                                        </div>
+                                        </center>
                                     </div>
-                                    <hr>
-                                    Styling for the donut chart can be found in the
-                                    <code>/js/demo/chart-pie-demo.js</code> file.
                                 </div>
                             </div>
                         </div>
