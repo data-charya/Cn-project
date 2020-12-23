@@ -42,7 +42,7 @@ class Organization(db.Model):
     #     elist = elist + [post.email]
     # print(elist)
 
-@app.route('/')
+@app.route('/index.html')
 def dashboard_page():
     return render_template('index.html')
 
