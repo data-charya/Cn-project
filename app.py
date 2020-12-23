@@ -71,6 +71,10 @@ def mail_page():
 def group_members():
     return render_template('group_members.html')
 
+@app.route('/user_list.html')
+def userlist_page():
+    return render_template('user_list.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
