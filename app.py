@@ -90,8 +90,21 @@ def delete_group(id):
 @app.route('/view/subscribers/<string:number>')
 def subscribers_page(number):
     post = Subscribers.query.filter_by(gid=number).all()
+    response=Groups.query.order_by(Groups.id).all()
+    # print(response)
     # print(post)
-    return render_template('group_members.html', post=post)
+    return render_template('group_members.html', post=post, response=response)
+
+@app.route('/new/subscribers', methods=['POST'])
+def submit_new_subscribers():
+    if(request.method=='POST'):
+        email = request.form.get('email')
+        gid = request.form.get('gid')
+        entry = Subscribers(email=email, date=time, gid=gid)
+        db.session.add(entry)
+        db.session.commit()
+        # flash("New subscriber added successfully!", "success")
+    return redirect('/view/subscribers/'+str(gid))
 
 @app.route('/delete/subscriber/<string:gid>/<string:number>', methods=['GET'])
 def delete_subscriber(gid, number):
