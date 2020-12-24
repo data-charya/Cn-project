@@ -327,6 +327,21 @@ def mail_page():
     return render_template('mail.html', group=group, template=mailtemp)
 
 
+@app.route("/use/template/<int:id>", methods = ['GET'])
+# @login_required
+def use_template(id):
+    post = Template.query.filter_by(id=id).first()
+    group = Group.query.order_by(Group.id).all()
+    mailtemp = Template.query.order_by(Template.id).all()
+    return render_template('mail2.html', group=group, template=mailtemp, post=post)
+
+@app.route("/use/group/<int:id>", methods = ['GET'])
+# @login_required
+def use_group(id):
+    post = Group.query.filter_by(id=id).first()
+    mailtemp = Template.query.order_by(Template.id).all()
+    return render_template('mail3.html', template=mailtemp, post=post)
+
 @app.route('/view/templates')
 # @login_required
 def template_page():
