@@ -57,28 +57,17 @@
 {% for template in template %}
 
 
-        <!-- Number of Groups Card -->
-        <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 65%;">
+        <div class="col-lg-4 col-md-2 py-4">
+            <div class="card">
+                <img class="card-img-top" src="{{template.link}}" height="300" width="300" alt="Card image cap">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center; font-size: 25px">
-                                {{ template.name }}</div>
-                            <img class="img-fluid" style="width: 250px; height:175px; border-radius: 20px;" src="{{template.link}}" alt="">
-                            <br>
-                            <div class="container py-2 mx-auto" style="align-items: center;">
-                                <center>
-                                        <a href="/use/template/{{ template.id }}" class="btn btn-success btn-circle">
-                                    <i class="fa fa-check" aria-hidden="true"></i>
-                                </a><a href="/delete/template/{{ template.id }}" class="btn btn-danger btn-circle">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                                </center>
-                            </div>
-                            
-                        </div>
+                <center>
+                    <h5 class="card-title font-weight-bold">{{ template.name }}</h5>
+                    <div class="container">
+                        <a href="/use/template/{{ template.id }}"><button type="button" class="btn btn-outline-success" >Use Template</button></a>
+                        <a href="/delete/template/{{ template.id }}"><button type="button" class="btn btn-outline-danger">Delete Template</button></a>
                     </div>
+                </center>
                 </div>
             </div>
         </div>
