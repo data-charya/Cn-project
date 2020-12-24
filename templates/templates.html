@@ -64,16 +64,17 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
-                                Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="{{template.img}}" alt="">
+                                {{ template.name }}</div>
+                            <img class="img-fluid" style="width: 500px; height:200px; border-radius: 20px;" src="{{template.link}}" alt="">
                             <br>
                             <div class="container py-2 mx-auto" style="align-items: center;">
                                 <center>
-                                    <form action="">
-                                        <button type="button" class="btn btn-primary rounded-pill" style="align-self: center;">
+                                        <button type="button" class="btn btn-primary " style="align-self: center;">
                                             Use this template
                                         </button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger" style="align-self: center;">
+                                            Delete
+                                        </button>
                                 </center>
                             </div>
                             
