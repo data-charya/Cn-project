@@ -321,6 +321,7 @@ def dash_page():
 
 
 @app.route('/view/users')
+@login_required
 def users_page():
     post = Organization.query.order_by(Organization.id).all()
     return render_template('user_list.html', post=post)
