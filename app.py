@@ -272,7 +272,8 @@ def delete_subscriber(gid, number):
 
 @app.route('/mail')
 def mail_page():
-    return render_template('mail.html')
+    group = Group.query.order_by(Group.id).all()
+    return render_template('mail.html', group=group)
 
 @app.route('/groups')
 def groups_page():
