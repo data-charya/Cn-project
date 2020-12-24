@@ -7,7 +7,47 @@
         <h1 class="h3 mb-0 text-gray-800">Templates</h1>
     </div>
 
-    <!-- Content Row -->
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">
+    Add Template
+    </button>
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Template</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+                <form action="">
+                    <input class="form-control" type="text" placeholder="link..">
+                    <label for="exampleFormControlTextarea1">Replace with summernote below</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Replace with summernote"></textarea>
+                    <br>
+                    <center>
+                        <button class="btn btn-primary rounded-pill" type="submit">Submit</button>
+                    </center>
+                </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger px-2" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container" style="height: 10px;width: 100vw;"></div>
+        <!-- Content Row -->
     <div class="row">
 
         <!-- Number of Groups Card -->
