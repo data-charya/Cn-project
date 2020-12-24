@@ -59,22 +59,21 @@
 
         <!-- Number of Groups Card -->
         <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
+            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 65%;">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center; font-size: 25px">
                                 {{ template.name }}</div>
-                            <img class="img-fluid" style="width: 500px; height:200px; border-radius: 20px;" src="{{template.link}}" alt="">
+                            <img class="img-fluid" style="width: 250px; height:175px; border-radius: 20px;" src="{{template.link}}" alt="">
                             <br>
                             <div class="container py-2 mx-auto" style="align-items: center;">
                                 <center>
-                                        <button type="button" class="btn btn-primary " style="align-self: center;">
-                                            Use this template
-                                        </button>
-                                    <button type="button" class="btn btn-danger" style="align-self: center;">
-                                            Delete
-                                        </button>
+                                        <a href="/use/template/{{ template.id }}" class="btn btn-success btn-circle">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </a><a href="/delete/template/{{ template.id }}" class="btn btn-danger btn-circle">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                                 </center>
                             </div>
                             

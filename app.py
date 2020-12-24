@@ -129,10 +129,7 @@ def login():
             login_user(user, remember=remember)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('dash_page'))
-
             # TODO: TO BE REPLACED BY DASHBOARD
-
-
         # TODO:Add a invalid login credentials message using flash
 
         else:
@@ -160,7 +157,7 @@ def register_page():
             password = sha256_crypt.hash(password)
             response = Organization.query.filter_by(email=email).first()
             if(response==None):
-                entry = Organization(name=name, email=email, password=password, date=time, status=1)
+                entry = Organization(name=name, email=email, password=password, date=time, status=0)
                 db.session.add(entry)
                 db.session.commit()
                 # flash("Now contact your organization head for account activation!", "success")
@@ -188,7 +185,6 @@ def register_page():
     return render_template('register.html', json=json)
 
 @app.route('/forgot', methods = ['GET', 'POST'])
-@login_required
 def forgot_password_page():
     if (request.method == 'POST'):
         email=request.form.get('email')
@@ -251,6 +247,15 @@ def delete_group(id):
     # flash("Group deleted successfully!", "success")
     return redirect('/view/groups')
 
+@app.route("/delete/user/<int:id>", methods = ['GET'])
+@login_required
+def delete_user(id):
+    delete_user = Organization.query.filter_by(id=id).first()
+    db.session.delete(delete_user)
+    db.session.commit()
+    # flash("User deleted successfully!", "success")
+    return redirect('/view/users')
+
 @app.route('/view/subscribers/<int:number>')
 @login_required
 def subscribers_page(number):
@@ -282,6 +287,7 @@ def delete_subscriber(gid, number):
     return redirect('/view/subscribers/'+str(gid))
 
 @app.route('/mail')
+@login_required
 def mail_page():
     group = Group.query.order_by(Group.id).all()
     return render_template('mail.html', group=group)
@@ -297,6 +303,7 @@ def template_page():
     return render_template('templates.html', template=template)
 
 @app.route('/add/template', methods=['POST'])
+@login_required
 def add_template():
     if (request.method == 'POST'):
         link = request.form.get('link')
@@ -316,11 +323,13 @@ def unsub_page():
     return render_template('unsubscribe.html')
 
 @app.route('/')
+@login_required
 def dash_page():
     return render_template('index.html')
 
 
 @app.route('/view/users')
+@login_required
 def users_page():
     post = Organization.query.order_by(Organization.id).all()
     return render_template('user_list.html', post=post)
