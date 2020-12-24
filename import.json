@@ -1,0 +1,12 @@
+{
+  "jsondata": {
+  "favTitle": "Bulk Mailer",
+  "favDescription": "",
+  "copyrightMessage": "",
+  "devImgName": "",
+  "databaseUri": "sqlite:///bulkmailer.db",
+    "sendgridapi": "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",
+    "admin_email": "",
+    "site_url": ""
+}
+}
