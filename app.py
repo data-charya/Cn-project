@@ -114,11 +114,14 @@ def loginPage():
         email = request.form.get('email')
         password = request.form.get('password')
         response = Organization.query.filter_by(email=email).first()
-        if((response != None) and ( response.email == email ) and ( sha256_crypt.verify(password, response.password )==1) and (response.status==1)):
+        if((response != None) and ( response.email == email ) and ( sha256_crypt.verify(password, response.password )==1) and (response.status==0)):
             updateloginTime = Organization.query.filter_by(email=email).first()
             updateloginTime.date = time
             db.session.commit()
             # TODO:Invoke new session
+
+            # TODO: TO BE REPLACED BY DASHBOARD
+
             return redirect('/')
 
         # TODO:Add a invalid login credentials message using flash
