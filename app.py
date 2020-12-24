@@ -61,6 +61,7 @@ new_password = ''.join(random.choice(letters) for i in range(8))
 x = datetime.now()
 time = x.strftime("%c")
 
+domain='@bulkmailer.cf'
 #TODO: IDEA IN IT
 
     # post = Subscribers.query.filter_by(gid=1).all()
@@ -129,10 +130,7 @@ def login():
             login_user(user, remember=remember)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('dash_page'))
-
             # TODO: TO BE REPLACED BY DASHBOARD
-
-
         # TODO:Add a invalid login credentials message using flash
 
         else:
@@ -141,7 +139,7 @@ def login():
     return render_template('login.html', json=json)
 
 @app.route('/logout')
-@login_required
+# @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
@@ -160,7 +158,7 @@ def register_page():
             password = sha256_crypt.hash(password)
             response = Organization.query.filter_by(email=email).first()
             if(response==None):
-                entry = Organization(name=name, email=email, password=password, date=time, status=1)
+                entry = Organization(name=name, email=email, password=password, date=time, status=0)
                 db.session.add(entry)
                 db.session.commit()
                 # flash("Now contact your organization head for account activation!", "success")
@@ -188,7 +186,6 @@ def register_page():
     return render_template('register.html', json=json)
 
 @app.route('/forgot', methods = ['GET', 'POST'])
-@login_required
 def forgot_password_page():
     if (request.method == 'POST'):
         email=request.form.get('email')
@@ -225,14 +222,14 @@ def forgot_password_page():
 
 
 @app.route('/view/groups')
-@login_required
+# @login_required
 def group_page():
     post = Group.query.order_by(Group.id).all()
     # print(time)
     return render_template('group_list.html', post=post)
 
 @app.route('/new/group', methods=['POST'])
-@login_required
+# @login_required
 def submit_new_group():
     if(request.method=='POST'):
         group_name = request.form.get('groupname')
@@ -243,7 +240,7 @@ def submit_new_group():
     return redirect('/view/groups')
 
 @app.route("/delete/group/<int:id>", methods = ['GET'])
-@login_required
+# @login_required
 def delete_group(id):
     delete_group = Group.query.filter_by(id=id).first()
     db.session.delete(delete_group)
@@ -251,8 +248,26 @@ def delete_group(id):
     # flash("Group deleted successfully!", "success")
     return redirect('/view/groups')
 
+@app.route("/delete/user/<int:id>", methods = ['GET'])
+# @login_required
+def delete_user(id):
+    delete_user = Organization.query.filter_by(id=id).first()
+    db.session.delete(delete_user)
+    db.session.commit()
+    # flash("User deleted successfully!", "success")
+    return redirect('/view/users')
+
+@app.route("/delete/template/<int:id>", methods = ['GET'])
+# @login_required
+def delete_template(id):
+    delete_template = Template.query.filter_by(id=id).first()
+    db.session.delete(delete_template)
+    db.session.commit()
+    # flash("Template deleted successfully!", "success")
+    return redirect('/view/templates')
+
 @app.route('/view/subscribers/<int:number>')
-@login_required
+# @login_required
 def subscribers_page(number):
     post = Subscriber.query.filter_by(group_id=number).all()
     response = Group.query.order_by(Group.id).all()
@@ -261,7 +276,7 @@ def subscribers_page(number):
     return render_template('group_members.html', post=post, response=response)
 
 @app.route('/new/subscribers', methods=['POST'])
-@login_required
+# @login_required
 def submit_new_subscribers():
     if(request.method=='POST'):
         email = request.form.get('email')
@@ -273,7 +288,7 @@ def submit_new_subscribers():
     return redirect('/view/subscribers/' + str(gid))
 
 @app.route('/delete/subscriber/<int:gid>/<int:number>', methods=['GET'])
-@login_required
+# @login_required
 def delete_subscriber(gid, number):
     delete_subscriber = Subscriber.query.filter_by(id=number).first()
     db.session.delete(delete_subscriber)
@@ -281,22 +296,60 @@ def delete_subscriber(gid, number):
     # flash("subscriber deleted successfully!", "success")
     return redirect('/view/subscribers/'+str(gid))
 
-@app.route('/mail')
+    # post = Subscribers.query.filter_by(gid=1).all()
+    # print(post)
+    # elist=[]
+    # for post in post:
+    #     elist = elist + [post.email]
+    # print(elist)
+
+
+@app.route('/mail', methods=['POST', 'GET'])
+# @login_required
 def mail_page():
+    if(request.method=='POST'):
+        username = request.form.get('username')
+        name = request.form.get('name')
+        subject = request.form.get('subject')
+        group = request.form.get('group')
+        html_content = request.form.get('editordata')
+        fromemail = username+domain
+        mailobj = Subscriber.query.filter_by(group_id=group).all()
+        maillist = []
+        for mailobj in mailobj:
+            maillist = maillist + [mailobj.email]
+        # print(maillist)
+        message = Mail(
+            from_email=(fromemail, name),
+            to_emails=maillist,
+            subject=subject,
+            html_content=html_content)
+        try:
+            sg = SendGridAPIClient(json['sendgridapi'])
+            response = sg.send(message)
+            # flash("Mail has been sent successfully!", "success")
+            # print(response.status_code)
+            # print(response.body)
+            # print(response.headers)
+        except Exception as e:
+            print("Error!")
     group = Group.query.order_by(Group.id).all()
-    return render_template('mail.html', group=group)
+    mailtemp = Template.query.order_by(Template.id).all()
+    return render_template('mail.html', group=group, template=mailtemp)
 
 @app.route('/groups')
-@login_required
+# @login_required
 def groups_page():
     return render_template('group_list.html')
 
-@app.route('/template')
+@app.route('/view/templates')
+# @login_required
 def template_page():
     template = Template.query.order_by(Template.id).all()
     return render_template('templates.html', template=template)
 
 @app.route('/add/template', methods=['POST'])
+# @login_required
 def add_template():
     if (request.method == 'POST'):
         link = request.form.get('link')
@@ -305,7 +358,7 @@ def add_template():
         entry = Template(name=name, date=time, content=editordata, link=link)
         db.session.add(entry)
         db.session.commit()
-        return redirect('/template')
+        return redirect('/view/templates')
 
 @app.route('/landingpage')
 def landing_page():
@@ -316,15 +369,17 @@ def unsub_page():
     return render_template('unsubscribe.html')
 
 @app.route('/')
+# @login_required
 def dash_page():
     return render_template('index.html')
 
 
 @app.route('/view/users')
-@login_required
+# @login_required
 def users_page():
     post = Organization.query.order_by(Organization.id).all()
     return render_template('user_list.html', post=post)
+
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     # note that we set the 404 status explicitly
