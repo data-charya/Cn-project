@@ -3,7 +3,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Groups Members</h1>
+    <h1 class="h3 mb-2 text-gray-800">Organization Members</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -17,6 +17,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Date</th>
+                            <th>Status</th>
+                            <th>Activate / Deactivate</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
@@ -26,6 +28,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Date</th>
+                            <th>Status</th>
+                            <th>Activate / Deactivate</th>
                             <th>Delete</th>
                         </tr>
                     </tfoot>
@@ -35,6 +39,12 @@
                             <td>{{user.name}}</td>
                             <td>{{user.email}}</td>
                             <td>{{user.date}}</td>
+                            <td>{{user.status}}</td>
+                            <td>
+                                <a href="/activate/user/{{ user.id }}" class="btn btn-success btn-circle">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                            </td>
                             <td>
                                 <a href="/delete/user/{{ user.id }}" class="btn btn-danger btn-circle">
                                     <i class="fas fa-trash"></i>

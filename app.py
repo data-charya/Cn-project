@@ -99,7 +99,7 @@ def login():
         password = request.form.get('password')
         remember = request.form.get('remember')
         user = Organization.query.filter_by(email=email).first()
-        if((user) and ( sha256_crypt.verify(password, user.password )==1) and (user.status == 0)):
+        if((user) and ( sha256_crypt.verify(password, user.password )==1) and (user.status == 1)):
             user.date = time
             db.session.add(user)
             db.session.commit()
@@ -223,6 +223,19 @@ def delete_group(id):
     db.session.commit()
     # flash("Group deleted successfully!", "success")
     return redirect('/view/groups')
+
+@app.route("/activate/user/<int:id>", methods = ['GET'])
+# @login_required
+def activate_user(id):
+    activate_user = Organization.query.filter_by(id=id).first()
+    if(activate_user.status==1):
+        activate_user.status=0
+        # flash("User deactivated successfully!", "success")
+    else:
+        activate_user.status=1
+        # flash("User activated successfully!", "success")
+    db.session.commit()
+    return redirect('/view/users')
 
 @app.route("/delete/user/<int:id>", methods = ['GET'])
 # @login_required
