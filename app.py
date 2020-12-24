@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
+from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sendgrid import SendGridAPIClient
@@ -28,7 +28,6 @@ def load_user(user_id):
 
 
 class Group(db.Model):
-    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     date = db.Column(db.String(50), nullable=False)
@@ -41,7 +40,6 @@ class Subscriber(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
 class Organization(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
@@ -108,21 +106,25 @@ time = x.strftime("%c")
 #     return render_template('login.html')
 
 @app.route('/login', methods = ['GET', 'POST'])
-def loginPage():
+def login():
     # TODO: Check for active session
+    if current_user.is_authenticated:
+        return redirect(url_for('dash_page'))
     if (request.method == 'POST'):
         email = request.form.get('email')
         password = request.form.get('password')
-        response = Organization.query.filter_by(email=email).first()
-        if((response != None) and ( response.email == email ) and ( sha256_crypt.verify(password, response.password )==1) and (response.status==0)):
-            updateloginTime = Organization.query.filter_by(email=email).first()
-            updateloginTime.date = time
+        remember = request.form.get('remember')
+        user = Organization.query.filter_by(email=email).first()
+        if((user) and ( sha256_crypt.verify(password, user.password )==1) and (user.status==0)):
+            user.date = time
+            db.session.add(user)
             db.session.commit()
-            # TODO:Invoke new session
+            login_user(user, remember=remember)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('dash_page'))
 
             # TODO: TO BE REPLACED BY DASHBOARD
 
-            return redirect('/')
 
         # TODO:Add a invalid login credentials message using flash
 
@@ -132,6 +134,7 @@ def loginPage():
     return render_template('login.html', json=json)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
@@ -178,6 +181,7 @@ def register_page():
     return render_template('register.html', json=json)
 
 @app.route('/forgot', methods = ['GET', 'POST'])
+@login_required
 def forgot_password_page():
     if (request.method == 'POST'):
         email=request.form.get('email')
@@ -214,12 +218,14 @@ def forgot_password_page():
 
 
 @app.route('/view/groups')
+@login_required
 def group_page():
     post = Group.query.order_by(Group.id).all()
     # print(time)
     return render_template('group_list.html', post=post)
 
 @app.route('/new/group', methods=['POST'])
+@login_required
 def submit_new_group():
     if(request.method=='POST'):
         group_name = request.form.get('groupname')
@@ -230,6 +236,7 @@ def submit_new_group():
     return redirect('/view/groups')
 
 @app.route("/delete/group/<int:id>", methods = ['GET'])
+@login_required
 def delete_group(id):
     delete_group = Group.query.filter_by(id=id).first()
     db.session.delete(delete_group)
@@ -238,6 +245,7 @@ def delete_group(id):
     return redirect('/view/groups')
 
 @app.route('/view/subscribers/<int:number>')
+@login_required
 def subscribers_page(number):
     post = Subscriber.query.filter_by(group_id=number).all()
     response = Group.query.order_by(Group.id).all()
@@ -246,6 +254,7 @@ def subscribers_page(number):
     return render_template('group_members.html', post=post, response=response)
 
 @app.route('/new/subscribers', methods=['POST'])
+@login_required
 def submit_new_subscribers():
     if(request.method=='POST'):
         email = request.form.get('email')
@@ -257,6 +266,7 @@ def submit_new_subscribers():
     return redirect('/view/subscribers/' + str(gid))
 
 @app.route('/delete/subscriber/<int:gid>/<int:number>', methods=['GET'])
+@login_required
 def delete_subscriber(gid, number):
     delete_subscriber = Subscriber.query.filter_by(id=number).first()
     db.session.delete(delete_subscriber)
@@ -269,6 +279,7 @@ def mail_page():
     return render_template('mail.html')
 
 @app.route('/groups')
+@login_required
 def groups_page():
     return render_template('group_list.html')
 
@@ -290,8 +301,11 @@ def dash_page():
 
 
 @app.route('/users')
+@login_required
 def users_page():
-    return render_template('user_list.html')
+    users = Organization.query.all()
+    return render_template('user_list.html', users=users)
+    
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     # note that we set the 404 status explicitly

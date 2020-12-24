@@ -20,6 +20,7 @@
                             <th>Delete</th>
                         </tr>
                     </thead>
+
                     <tfoot>
                         <tr>
                             <th>Admin Name</th>
@@ -29,10 +30,11 @@
                         </tr>
                     </tfoot>
                     <tbody>
+                        {% for user in users %}
                         <tr>
-                            <td>Vignesh</td>
-                            <td>IAMsomeone@gmail.com</td>
-                            <td>10/12/1600</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.date}}</td>
                             <td>
                                 <a href="#" class="btn btn-danger btn-icon-split">
                                     <span class="icon text-white-50">
@@ -42,6 +44,7 @@
                                 </a>
                             </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
