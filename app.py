@@ -373,7 +373,6 @@ def unsub_page():
 def dash_page():
     return render_template('index.html')
 
-
 @app.route('/view/users')
 # @login_required
 def users_page():
