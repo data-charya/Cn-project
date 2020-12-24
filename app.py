@@ -43,6 +43,7 @@ class Subscriber(db.Model):
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    link = db.Column(db.String(100), nullable=False)
     content = db.Column(db.String(500), nullable=False)
     date = db.Column(db.String(50), nullable=False)
 
@@ -281,7 +282,19 @@ def groups_page():
 
 @app.route('/template')
 def template_page():
-    return render_template('templates.html')
+    template = Template.query.order_by(Template.id).all()
+    return render_template('templates.html', template=template)
+
+@app.route('/add/template', methods=['POST'])
+def add_template():
+    if (request.method == 'POST'):
+        link = request.form.get('link')
+        name = request.form.get('name')
+        editordata = request.form.get('editordata')
+        entry = Template(name=name, date=time, content=editordata, link=link)
+        db.session.add(entry)
+        db.session.commit()
+        return redirect('/template')
 
 @app.route('/landingpage')
 def landing_page():

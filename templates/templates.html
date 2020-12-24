@@ -26,13 +26,15 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
-                <form action="">
-                    <input class="form-control" type="text" placeholder="link..">
-                    <label for="exampleFormControlTextarea1">Replace with summernote below</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Replace with summernote"></textarea>
+                <form action="/add/template" method="post">
+                     <input class="form-control" name="name" type="text" placeholder="Name..." required>
+                    <br>
+                    <input class="form-control" name="link" type="text" placeholder="CDN Link..." required>
+                    <br>
+                     <textarea id="summernote" name="editordata" required></textarea>
                     <br>
                     <center>
-                        <button class="btn btn-primary rounded-pill" type="submit">Submit</button>
+                        <button class="btn btn-primary " type="submit">Submit</button>
                     </center>
                 </form>
             </div>
@@ -50,6 +52,11 @@
         <!-- Content Row -->
     <div class="row">
 
+{#Start Loop#}
+
+{% for template in template %}
+
+
         <!-- Number of Groups Card -->
         <div class="col-xl-4 col-md-6 mb-4" >
             <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
@@ -58,7 +65,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
                                 Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="/static/img/test.png" alt="">
+                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="{{template.img}}" alt="">
                             <br>
                             <div class="container py-2 mx-auto" style="align-items: center;">
                                 <center>
@@ -76,138 +83,14 @@
             </div>
         </div>
 
-        <!-- Number of Groups Card -->
-        <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
-                                Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="/static/img/test.png" alt="">
-                            <br>
-                            <div class="container py-2 mx-auto" style="align-items: center;">
-                                <center>
-                                    <form action="">
-                                        <button type="button" class="btn btn-primary rounded-pill" style="align-self: center;">
-                                            Use this template
-                                        </button>
-                                    </form>
-                                </center>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Number of Groups Card -->
-        <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
-                                Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="/static/img/test.png" alt="">
-                            <br>
-                            <div class="container py-2 mx-auto" style="align-items: center;">
-                                <center>
-                                    <form action="">
-                                        <button type="button" class="btn btn-primary rounded-pill" style="align-self: center;">
-                                            Use this template
-                                        </button>
-                                    </form>
-                                </center>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% endfor %}
+{#       End Loop#}
 
-        <!-- Number of Groups Card -->
-        <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
-                                Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="/static/img/test.png" alt="">
-                            <br>
-                            <div class="container py-2 mx-auto" style="align-items: center;">
-                                <center>
-                                    <form action="">
-                                        <button type="button" class="btn btn-primary rounded-pill" style="align-self: center;">
-                                            Use this template
-                                        </button>
-                                    </form>
-                                </center>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Number of Groups Card -->
-        <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
-                                Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="/static/img/test.png" alt="">
-                            <br>
-                            <div class="container py-2 mx-auto" style="align-items: center;">
-                                <center>
-                                <form action="">
-                                    <button type="button" class="btn btn-primary rounded-pill" style="align-self: center;">
-                                        Use this template
-                                    </button>
-                                </form>
-                                </center>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Number of Groups Card -->
-        <div class="col-xl-4 col-md-6 mb-4" >
-            <div class="card border-bottom-primary shadow h-100 py-2" style="width: 85%;">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="text-align: center;">
-                                Transactional Template</div>
-                            <img class="img-fluid" style="width: 100%;border-radius: 20px;" src="/static/img/test.png" alt="">
-                            <br>
-                            <div class="container py-2 mx-auto" style="align-items: center;">
-                                <center>
-                                    <form action="">
-                                        <button type="button" class="btn btn-primary rounded-pill" style="align-self: center;">
-                                            Use this template
-                                        </button>
-                                    </form>
-                                </center>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+
     </div>
-
     <!-- Content Row -->
     
 </div>
