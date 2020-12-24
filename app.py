@@ -84,28 +84,50 @@ time = x.strftime("%c")
     # except Exception as e:
     #     print("Error!")
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('dash_page'))
-    elif request.method == 'POST':
-        #login
-        form = request.form 
-        email = form.get('email')
-        password = form.get('password')
-        remember = form.get('remember')
-        user = Organization.query.filter_by(email=email).one_or_none()
-        if user:
-            '''TO DO:
-                Check if password matches
-            '''
-            login_user(user, remember=remember)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('dash_page'))
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('dash_page'))
+#     elif request.method == 'POST':
+#         #login
+#         form = request.form
+#         email = form.get('email')
+#         password = form.get('password')
+#         remember = form.get('remember')
+#         user = Organization.query.filter_by(email=email).one_or_none()
+#         if user:
+#             '''TO DO:
+#                 Check if password matches
+#             '''
+#             login_user(user, remember=remember)
+#             next_page = request.args.get('next')
+#             return redirect(next_page) if next_page else redirect(url_for('dash_page'))
+#         else:
+#             #user doesnt exist, error msg
+#             flash('Account not found', 'danger')
+#     return render_template('login.html')
+
+@app.route('/login', methods = ['GET', 'POST'])
+def loginPage():
+    # TODO: Check for active session
+    if (request.method == 'POST'):
+        email = request.form.get('email')
+        password = request.form.get('password')
+        response = Organization.query.filter_by(email=email).first()
+        if((response != None) and ( response.email == email ) and ( sha256_crypt.verify(password, response.password )==1) and (response.status==1)):
+            updateloginTime = Organization.query.filter_by(email=email).first()
+            updateloginTime.date = time
+            db.session.commit()
+            # TODO:Invoke new session
+
+        # TODO:Add a invalid login credentials message using flash
+
         else:
-            #user doesnt exist, error msg
-            flash('Account not found', 'danger')
-    return render_template('login.html')
+            # if (response == None or (sha256_crypt.verify(password, response.password) != 1)):
+            # flash("Invalid credentials or account not activated!", "danger")
+            return render_template('login.html', json=json)
+    else:
+        return render_template('login.html', json=json)
 
 @app.route('/logout')
 def logout():
