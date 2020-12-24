@@ -207,6 +207,21 @@ def delete_subscriber(gid, number):
     # flash("subscriber deleted successfully!", "success")
     return redirect('/view/subscribers/'+str(gid))
 
+@app.route('/mail')
+def mail_page():
+    return render_template('mail.html')
+
+@app.route('/groups')
+def groups_page():
+    return render_template('group_list.html')
+
+@app.route('/template')
+def template_page():
+    return render_template('templates.html')
+
+@app.route('/')
+def dash_page():
+    return render_template('index.html')
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     # note that we set the 404 status explicitly
