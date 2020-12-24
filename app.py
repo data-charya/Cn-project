@@ -273,6 +273,14 @@ def groups_page():
 def template_page():
     return render_template('templates.html')
 
+@app.route('/landingpage')
+def landing_page():
+    return render_template('landingpage.html')
+
+@app.route('/unsubscribe')
+def unsub_page():
+    return render_template('unsubscribe.html')
+
 @app.route('/')
 def dash_page():
     return render_template('index.html')
