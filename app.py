@@ -40,6 +40,12 @@ class Subscriber(db.Model):
     date = db.Column(db.String(50), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
+class Template(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+
 class Organization(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.Integer, primary_key=True)
