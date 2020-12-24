@@ -55,6 +55,7 @@ new_password = ''.join(random.choice(letters) for i in range(8))
 
 x = datetime.now()
 time = x.strftime("%c")
+
 #TODO: IDEA IN IT
 
     # post = Subscribers.query.filter_by(gid=1).all()
