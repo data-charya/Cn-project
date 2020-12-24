@@ -69,19 +69,22 @@
                         <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4" style="width: auto;">
                                 <div class="card-body">
-                                    <h1 class="h3 mb-2 text-primary-800 font-weight-bold" style="text-align: center;color: #605bc2;">Mailing Groups</h1>
+                                    <h1 class="h3 mb-2 text-primary-800 font-weight-bold" style="text-align: center;color: #605bc2;">Select Template</h1>
                                     <img class="img-fluid " style="width: 100%;" src="/static/img/mail.png" alt="">
                                     <div class="container">
                                         <div class="dropdown">
                                             <center>
                                                 <button style="background: #3e64d3;color: #fff;" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  Dropdown button
+                                                  Choose
                                                 </button>
                                             
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <a class="dropdown-item" href="#">Action</a>
-                                              <a class="dropdown-item" href="#">Another action</a>
-                                              <a class="dropdown-item" href="#">Something else here</a>
+{#                                                Start Loop#}
+{% for template in template %}
+                                              <a class="dropdown-item" href="/use/template/{{ template.id }}">{{ template.name }}</a>
+{% endfor %}
+{#                                                End Loop#}
+
                                             </div>
                                             </center>
                                         </div>

@@ -66,29 +66,28 @@
                 Features
             </div>
 
-
-            <!-- Nav Item - Mail -->
-            <li class="nav-item">
-                <a class="nav-link" href="/mail">
-                    <i class="fas fa-fw fa-mail-bulk"></i>
-                    <span>Mail</span></a>
+<li class="nav-item">
+                <a class="nav-link" href="/view/users">
+                    <i class="fas fa-fw fa-users-cog"></i>
+                    <span>Users</span></a>
             </li>
-
-            <!-- Nav Item - Tables -->
+                   <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="/view/groups">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Groups</span></a>
             </li>
 
+            <!-- Nav Item - Mail -->
             <li class="nav-item">
-                <a class="nav-link" href="/view/users">
-                    <i class="fas fa-fw fa-users-cog"></i>
-                    <span>Users</span></a>
+                <a class="nav-link" href="/mail">
+                    <i class="fas fa-fw fa-mail-bulk"></i>
+                    <span>Mailer</span></a>
             </li>
 
+
             <li class="nav-item">
-                <a class="nav-link" href="/template">
+                <a class="nav-link" href="/view/templates">
                     <i class="fas fa-fw fa-file-code"></i>
                     <span>Templates</span></a>
             </li>
@@ -127,7 +126,6 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
                                 <img class="img-profile rounded-circle" src="{{ url_for('static', filename='img/char.png') }}">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -186,7 +184,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/logout">Logout</a>
                 </div>
             </div>
         </div>

@@ -30,13 +30,13 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        {% for user in users %}
+                        {% for post in post %}
                         <tr>
-                            <td>{{user.name}}</td>
-                            <td>{{user.email}}</td>
-                            <td>{{user.date}}</td>
+                            <td>{{post.name}}</td>
+                            <td>{{post.email}}</td>
+                            <td>{{post.date}}</td>
                             <td>
-                                <a href="delete/user/{{ user.id }}" class="btn btn-danger btn-circle">
+                                <a href="/delete/user/{{ post.id }}" class="btn btn-danger btn-circle">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
