@@ -63,14 +63,14 @@
                     </tfoot>
                     <tbody>
 {#                                    Start loop#}
-{% for post in post %}
+{% for group in groups %}
                         <tr>
-                        <td>{{ post.id }}</td>
+                        <td>{{ group.id }}</td>
                             <td>
-                                <a style="text-decoration: none;" href="/view/subscribers/{{ post.id }}">{{ post.name }}</a></td>
-                            <td>{{ post.date }}</td>
+                                <a style="text-decoration: none;" href="/view/subscribers/{{ group.id }}">{{ group.name }}</a></td>
+                            <td>{{ group.date }}</td>
                             <td>
-                                <a href="/delete/group/{{ post.id }}" class="btn btn-danger btn-circle">
+                                <a href="/delete/group/{{ group.id }}" class="btn btn-danger btn-circle">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>

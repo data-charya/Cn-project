@@ -24,8 +24,7 @@ login_manager.login_message_category = 'info'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Organization.get(user_id)
-
+    return Organization.query.get(user_id)
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -90,29 +89,6 @@ domain='@bulkmailer.cf'
     # except Exception as e:
     #     print("Error!")
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('dash_page'))
-#     elif request.method == 'POST':
-#         #login
-#         form = request.form
-#         email = form.get('email')
-#         password = form.get('password')
-#         remember = form.get('remember')
-#         user = Organization.query.filter_by(email=email).one_or_none()
-#         if user:
-#             '''TO DO:
-#                 Check if password matches
-#             '''
-#             login_user(user, remember=remember)
-#             next_page = request.args.get('next')
-#             return redirect(next_page) if next_page else redirect(url_for('dash_page'))
-#         else:
-#             #user doesnt exist, error msg
-#             flash('Account not found', 'danger')
-#     return render_template('login.html')
-
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     # TODO: Check for active session
@@ -123,7 +99,7 @@ def login():
         password = request.form.get('password')
         remember = request.form.get('remember')
         user = Organization.query.filter_by(email=email).first()
-        if((user) and ( sha256_crypt.verify(password, user.password )==1) and (user.status==0)):
+        if((user) and ( sha256_crypt.verify(password, user.password )==1) and (user.status == 0)):
             user.date = time
             db.session.add(user)
             db.session.commit()
@@ -132,7 +108,6 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('dash_page'))
             # TODO: TO BE REPLACED BY DASHBOARD
         # TODO:Add a invalid login credentials message using flash
-
         else:
             #user doesnt exist, error msg
             flash('Account not found', 'danger')
@@ -179,6 +154,7 @@ def register_page():
                 except Exception as e:
                     print("Error")
                     # flash("Error while sending mail!", "danger")
+                return redirect(url_for('login'))
             else:
                 # flash("User exist!", "danger")
                 return render_template('register.html', json=json)
@@ -224,9 +200,9 @@ def forgot_password_page():
 @app.route('/view/groups')
 # @login_required
 def group_page():
-    post = Group.query.order_by(Group.id).all()
+    groups = Group.query.order_by(Group.id).all()
     # print(time)
-    return render_template('group_list.html', post=post)
+    return render_template('group_list.html', groups=groups)
 
 @app.route('/new/group', methods=['POST'])
 # @login_required
@@ -337,10 +313,6 @@ def mail_page():
     mailtemp = Template.query.order_by(Template.id).all()
     return render_template('mail.html', group=group, template=mailtemp)
 
-@app.route('/groups')
-# @login_required
-def groups_page():
-    return render_template('group_list.html')
 
 @app.route('/view/templates')
 # @login_required
@@ -377,8 +349,8 @@ def dash_page():
 @app.route('/view/users')
 # @login_required
 def users_page():
-    post = Organization.query.order_by(Organization.id).all()
-    return render_template('user_list.html', post=post)
+    users = Organization.query.order_by(Organization.id).all()
+    return render_template('user_list.html', users=users)
 
 # @app.errorhandler(404)
 # def page_not_found(e):
