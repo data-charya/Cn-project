@@ -27,12 +27,9 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     return Organization.get(user_id)
 
-x = datetime.now()
-time = x.strftime("%c")
 
 class Group(db.Model):
-    letters = string.ascii_letters
-    new_password = ''.join(random.choice(letters) for i in range(8))
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     date = db.Column(db.String(50), nullable=False)
@@ -51,6 +48,12 @@ class Organization(db.Model, UserMixin):
     password = db.Column(db.String(500), nullable=False)
     date = db.Column(db.String(50), nullable=False)
 
+
+letters = string.ascii_letters
+new_password = ''.join(random.choice(letters) for i in range(8))
+
+x = datetime.now()
+time = x.strftime("%c")
 #TODO: IDEA IN IT
 
     # post = Subscribers.query.filter_by(gid=1).all()
