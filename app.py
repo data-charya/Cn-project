@@ -105,7 +105,7 @@ def login():
         else:
             #user doesnt exist, error msg
             flash('Account not found', 'danger')
-    return render_template('login.html')
+    return render_template('login.html', json=json)
 
 @app.route('/logout')
 def logout():
