@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-import json
+from passlib.hash import sha256_crypt
+import json, random, string
+
 
 # TODO: USE JSON TO STORE URI & OTHER IMP STUFF
 
@@ -18,6 +20,9 @@ db = SQLAlchemy(app)
 
 x = datetime.now()
 time = x.strftime("%c")
+
+letters = string.ascii_letters
+new_password = ''.join(random.choice(letters) for i in range(8))
 
 class Groups(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,6 +70,82 @@ class Organization(db.Model):
     #     # print(response.headers)
     # except Exception as e:
     #     print("Error!")
+
+@app.route('/register',methods = ['GET', 'POST'])
+def register_page():
+    if (request.method == 'POST'):
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password2 = request.form.get('password2')
+        if(password!=password2):
+            # flash("Password unmatched!", "danger")
+            return render_template('register.html', json=json)
+        else:
+            password = sha256_crypt.encrypt(password)
+            response = Organization.query.filter_by(email=email).first()
+            if(response==None):
+                entry = Organization(name=name, email=email, password=password,lastlogin=datetime.now(), date=time, status=0)
+                db.session.add(entry)
+                db.session.commit()
+                # flash("Now contact your organization head for account activation!", "success")
+                subject = "Welcome aboard " + name + "!"
+                content = '<strong>Hey</strong><br><br>Thanks for subscribing.<br>Now contact your organization head for account activation.<br>We are available 24*7 to help you.<br>Happy Learning<br><br>Regards,<br>CGV Support<br><br<br><br>Please do not reply to this email it is an automated email.'
+                message = Mail(
+                    from_email=('cgv.support@sdlsmartlabs.co.in', 'CGV SUPPORT TEAM'),
+                    to_emails=email,
+                    subject=subject,
+                    html_content=content)
+                try:
+                    sg = SendGridAPIClient(json['sendgridapi'])
+                    response = sg.send(message)
+                    # flash('Email Sent Successfully!', success)
+                    # print(response.status_code)
+                    # print(response.body)
+                    # print(response.headers)
+                except Exception as e:
+                    print("Error")
+                    # flash("Error while sending mail!", "danger")
+            else:
+                # flash("User exist!", "danger")
+                return render_template('register.html', json=json)
+
+    return render_template('register.html', json=json)
+
+@app.route('/forgot', methods = ['GET', 'POST'])
+def forgot_password_page():
+    if (request.method == 'POST'):
+        email=request.form.get('email')
+        post = Organization.query.filter_by(email=email).first()
+        if(post!=None):
+            if(post.email==json["admin_email"]):
+                pass
+                # flash("You can't reset password of administrator!", "danger")
+            else:
+                passwordemial = new_password
+                post.password = sha256_crypt.encrypt(new_password)
+                db.session.commit()
+                subject = "New Password Generated "+passwordemial
+                content = "Hello,<br>Greatings from Bulk Mailer Team!<br><br>We have reseted your password.<br><br>We are available 24*7 to help you.<br>Happy Learning<br><br>Regards,<br>Team Bulk Mailer<br><br<br><br>Please do not reply to this email it is an automated email."
+                message = Mail(
+                    from_email=('resetpassword@bulkmailer', 'Bulk Mailer Reset Password'),
+                    to_emails=email,
+                    subject=subject,
+                    html_content=content)
+                try:
+                    sg = SendGridAPIClient(json['sendgridapi'])
+                    response = sg.send(message)
+                    # flash("You will receive a mail shortly. Password rested successfully!", "success")
+                    # print(response.status_code)
+                    # print(response.body)
+                    # print(response.headers)
+                except Exception as e:
+                    print("Error!")
+        elif(post==None):
+                # flash("We didn't find your account!", "danger")
+                return render_template('forgot-password.html', json=json)
+
+    return render_template('forgot-password.html', json=json)
 
 
 @app.route('/view/groups')
