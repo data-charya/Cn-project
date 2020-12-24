@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect
 from flask_login import LoginManager, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 import json
 
 # TODO: USE JSON TO STORE URI & OTHER IMP STUFF
@@ -53,6 +55,26 @@ class Organization(db.Model, UserMixin):
     # for post in post:
     #     elist = elist + [post.email]
     # print(elist)
+
+#TODO: MAIL CONFIG PART
+
+    # subject = " Some String "
+    # content = "<html> </html>"
+    # message = Mail(
+    #     from_email=('something@bulkmailer.cf', 'Some Name'),
+    #     to_emails="to mail",
+    #     subject=subject,
+    #     html_content=content)
+    # try:
+    #     sg = SendGridAPIClient(json['sendgridapi'])
+    #     response = sg.send(message)
+    #     # flash("You will receive a mail shortly. Password rested successfully!", "success")
+    #     # print(response.status_code)
+    #     # print(response.body)
+    #     # print(response.headers)
+    # except Exception as e:
+    #     print("Error!")
+
 
 @app.route('/view/groups')
 def group_page():
