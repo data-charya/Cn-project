@@ -1,5 +1,0 @@
-{
-  "json": {
-    "dburl": "sqlite:///bulkmailer.db"
-  }
-}
