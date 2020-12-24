@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect
-from flask_login import LoginManager, UserMixin
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sendgrid import SendGridAPIClient
@@ -12,7 +12,6 @@ import json, random, string
 
 with open('import.json', 'r') as c:
     json = json.load(c)["jsondata"]
-
 
 app = Flask(__name__)
 app.secret_key = "76^)(HEY,BULK-MAILER-HERE!)(skh390880213%^*&%6h&^&69lkjw*&kjh"
@@ -81,6 +80,34 @@ time = x.strftime("%c")
     #     # print(response.headers)
     # except Exception as e:
     #     print("Error!")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dash_page'))
+    elif request.method == 'POST':
+        #login
+        form = request.form 
+        email = form.get('email')
+        password = form.get('password')
+        remember = form.get('remember')
+        user = Organization.query.filter_by(email=email).one_or_none()
+        if user:
+            '''TO DO:
+                Check if password matches
+            '''
+            login_user(user, remember=remember)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('dash_page'))
+        else:
+            #user doesnt exist, error msg
+            flash('Account not found', 'danger')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route('/register',methods = ['GET', 'POST'])
 def register_page():
