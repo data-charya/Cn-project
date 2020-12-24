@@ -61,6 +61,7 @@ new_password = ''.join(random.choice(letters) for i in range(8))
 x = datetime.now()
 time = x.strftime("%c")
 
+domain='@bulkmailer.cf'
 #TODO: IDEA IN IT
 
     # post = Subscribers.query.filter_by(gid=1).all()
@@ -295,9 +296,43 @@ def delete_subscriber(gid, number):
     # flash("subscriber deleted successfully!", "success")
     return redirect('/view/subscribers/'+str(gid))
 
-@app.route('/mail')
+    # post = Subscribers.query.filter_by(gid=1).all()
+    # print(post)
+    # elist=[]
+    # for post in post:
+    #     elist = elist + [post.email]
+    # print(elist)
+
+
+@app.route('/mail', methods=['POST', 'GET'])
 # @login_required
 def mail_page():
+    if(request.method=='POST'):
+        username = request.form.get('username')
+        name = request.form.get('name')
+        subject = request.form.get('subject')
+        group = request.form.get('group')
+        html_content = request.form.get('editordata')
+        fromemail = username+domain
+        mailobj = Subscriber.query.filter_by(group_id=group).all()
+        maillist = []
+        for mailobj in mailobj:
+            maillist = maillist + [mailobj.email]
+        # print(maillist)
+        message = Mail(
+            from_email=(fromemail, name),
+            to_emails=maillist,
+            subject=subject,
+            html_content=html_content)
+        try:
+            sg = SendGridAPIClient(json['sendgridapi'])
+            response = sg.send(message)
+            # flash("Mail has been sent successfully!", "success")
+            # print(response.status_code)
+            # print(response.body)
+            # print(response.headers)
+        except Exception as e:
+            print("Error!")
     group = Group.query.order_by(Group.id).all()
     mailtemp = Template.query.order_by(Template.id).all()
     return render_template('mail.html', group=group, template=mailtemp)

@@ -18,10 +18,14 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Send Bulk Mails</h6>
                                 </div>
                                 <div class="card-body">
-                                    <form>
+                                    <form action="/mail" method="post">
                                         <div class="form-group">
+                                            <div class="form-group" style="width: 70%;">
+                                          <label for="exampleInputPassword1">Name</label>
+                                          <input type="text" name="name" class="form-control" id="exampleInputtext" required>
+                                        </div>
                                             <div class="input-group mb-3" style="width: 70%;">
-                                                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" required>
+                                                <input type="text" name="username" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" required>
                                                 <div class="input-group-append">
                                                   <span class="input-group-text" id="basic-addon2">@bulkmailer.cf</span>
                                                 </div>
@@ -30,17 +34,13 @@
                                         </div>
                                         <div class="form-group" style="width: 70%;">
                                           <label for="exampleInputPassword1">Subject</label>
-                                          <input type="text" class="form-control" id="exampleInputtext" required>
+                                          <input type="text" name="subject" class="form-control" id="exampleInputtext" required>
                                         </div>
-
-                                        
-                                        
-
                                         <div class="input-group mb-3"  style="width:60%">
                                             <div class="input-group-prepend">
                                               <label class="input-group-text" for="inputGroupSelect01">Choose Group</label>
                                             </div>
-                                            <select class="custom-select" id="inputGroupSelect01">
+                                            <select name="group" class="custom-select" id="inputGroupSelect01">
                                               <option selected>Choose...</option>
 {#                                                Start Loop#}
                                                 {% for group in group %}
