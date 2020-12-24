@@ -23,6 +23,10 @@
 
     <link href="{{ url_for('static', filename='vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
+    <!-- include summernote css/js -->
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
 
 
 </head>
@@ -78,7 +82,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/users">
+                <a class="nav-link" href="/view/users">
                     <i class="fas fa-fw fa-users-cog"></i>
                     <span>Users</span></a>
             </li>
@@ -211,6 +215,14 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ url_for('static', filename='js/demo/datatables-demo.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#summernote').summernote();
+    });
+    </script>
 
 </body>
 

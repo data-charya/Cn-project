@@ -39,6 +39,13 @@ class Subscriber(db.Model):
     date = db.Column(db.String(50), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
+class Template(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    link = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+
 class Organization(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -276,7 +283,8 @@ def delete_subscriber(gid, number):
 
 @app.route('/mail')
 def mail_page():
-    return render_template('mail.html')
+    group = Group.query.order_by(Group.id).all()
+    return render_template('mail.html', group=group)
 
 @app.route('/groups')
 @login_required
@@ -285,7 +293,19 @@ def groups_page():
 
 @app.route('/template')
 def template_page():
-    return render_template('templates.html')
+    template = Template.query.order_by(Template.id).all()
+    return render_template('templates.html', template=template)
+
+@app.route('/add/template', methods=['POST'])
+def add_template():
+    if (request.method == 'POST'):
+        link = request.form.get('link')
+        name = request.form.get('name')
+        editordata = request.form.get('editordata')
+        entry = Template(name=name, date=time, content=editordata, link=link)
+        db.session.add(entry)
+        db.session.commit()
+        return redirect('/template')
 
 @app.route('/landingpage')
 def landing_page():
@@ -300,12 +320,10 @@ def dash_page():
     return render_template('index.html')
 
 
-@app.route('/users')
-@login_required
+@app.route('/view/users')
 def users_page():
-    users = Organization.query.all()
-    return render_template('user_list.html', users=users)
-    
+    post = Organization.query.order_by(Organization.id).all()
+    return render_template('user_list.html', post=post)
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     # note that we set the 404 status explicitly
