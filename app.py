@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sendgrid import SendGridAPIClient
@@ -12,31 +13,34 @@ import json, random, string
 with open('import.json', 'r') as c:
     json = json.load(c)["jsondata"]
 
-
 app = Flask(__name__)
 app.secret_key = "76^)(HEY,BULK-MAILER-HERE!)(skh390880213%^*&%6h&^&69lkjw*&kjh"
 app.config['SQLALCHEMY_DATABASE_URI'] = json["databaseUri"]
 db = SQLAlchemy(app)
 
-x = datetime.now()
-time = x.strftime("%c")
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
 
-letters = string.ascii_letters
-new_password = ''.join(random.choice(letters) for i in range(8))
+@login_manager.user_loader
+def load_user(user_id):
+    return Organization.get(user_id)
 
-class Groups(db.Model):
+
+class Group(db.Model):
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     date = db.Column(db.String(50), nullable=False)
-    subscribers = db.relationship('Subscribers',cascade = "all,delete", backref='subscribers')
+    subscribers = db.relationship('Subscriber',cascade = "all,delete", backref='subscribers')
 
-class Subscribers(db.Model):
+class Subscriber(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50), nullable=False)
     date = db.Column(db.String(50), nullable=False)
-    gid = db.Column(db.Integer, db.ForeignKey('groups.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
-class Organization(db.Model):
+class Organization(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -45,6 +49,12 @@ class Organization(db.Model):
     status = db.Column(db.Integer , nullable=False)
     date = db.Column(db.String(50), nullable=False)
 
+
+letters = string.ascii_letters
+new_password = ''.join(random.choice(letters) for i in range(8))
+
+x = datetime.now()
+time = x.strftime("%c")
 #TODO: IDEA IN IT
 
     # post = Subscribers.query.filter_by(gid=1).all()
@@ -72,6 +82,34 @@ class Organization(db.Model):
     #     # print(response.headers)
     # except Exception as e:
     #     print("Error!")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dash_page'))
+    elif request.method == 'POST':
+        #login
+        form = request.form 
+        email = form.get('email')
+        password = form.get('password')
+        remember = form.get('remember')
+        user = Organization.query.filter_by(email=email).one_or_none()
+        if user:
+            '''TO DO:
+                Check if password matches
+            '''
+            login_user(user, remember=remember)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('dash_page'))
+        else:
+            #user doesnt exist, error msg
+            flash('Account not found', 'danger')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route('/register',methods = ['GET', 'POST'])
 def register_page():
@@ -152,7 +190,7 @@ def forgot_password_page():
 
 @app.route('/view/groups')
 def group_page():
-    post = Groups.query.order_by(Groups.id).all()
+    post = Group.query.order_by(Group.id).all()
     # print(time)
     return render_template('group_list.html', post=post)
 
@@ -160,24 +198,24 @@ def group_page():
 def submit_new_group():
     if(request.method=='POST'):
         group_name = request.form.get('groupname')
-        entry = Groups(name=group_name, date=time)
+        entry = Group(name=group_name, date=time)
         db.session.add(entry)
         db.session.commit()
         # flash("New group added successfully!", "success")
     return redirect('/view/groups')
 
-@app.route("/delete/group/<string:id>", methods = ['GET'])
+@app.route("/delete/group/<int:id>", methods = ['GET'])
 def delete_group(id):
-    delete_group = Groups.query.filter_by(id=id).first()
+    delete_group = Group.query.filter_by(id=id).first()
     db.session.delete(delete_group)
     db.session.commit()
     # flash("Group deleted successfully!", "success")
     return redirect('/view/groups')
 
-@app.route('/view/subscribers/<string:number>')
+@app.route('/view/subscribers/<int:number>')
 def subscribers_page(number):
-    post = Subscribers.query.filter_by(gid=number).all()
-    response=Groups.query.order_by(Groups.id).all()
+    post = Subscriber.query.filter_by(group_id=number).all()
+    response = Group.query.order_by(Group.id).all()
     # print(response)
     # print(post)
     return render_template('group_members.html', post=post, response=response)
@@ -187,20 +225,40 @@ def submit_new_subscribers():
     if(request.method=='POST'):
         email = request.form.get('email')
         gid = request.form.get('gid')
-        entry = Subscribers(email=email, date=time, gid=gid)
+        entry = Subscriber(email=email, date=time, group_id=gid)
         db.session.add(entry)
         db.session.commit()
         # flash("New subscriber added successfully!", "success")
-    return redirect('/view/subscribers/'+str(gid))
+    return redirect('/view/subscribers/' + str(gid))
 
-@app.route('/delete/subscriber/<string:gid>/<string:number>', methods=['GET'])
+@app.route('/delete/subscriber/<int:gid>/<int:number>', methods=['GET'])
 def delete_subscriber(gid, number):
-    delete_subscriber = Subscribers.query.filter_by(id=number).first()
+    delete_subscriber = Subscriber.query.filter_by(id=number).first()
     db.session.delete(delete_subscriber)
     db.session.commit()
     # flash("subscriber deleted successfully!", "success")
     return redirect('/view/subscribers/'+str(gid))
 
+@app.route('/mail')
+def mail_page():
+    return render_template('mail.html')
+
+@app.route('/groups')
+def groups_page():
+    return render_template('group_list.html')
+
+@app.route('/template')
+def template_page():
+    return render_template('templates.html')
+
+@app.route('/')
+def dash_page():
+    return render_template('index.html')
+
+
+@app.route('/users')
+def users_page():
+    return render_template('user_list.html')
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     # note that we set the 404 status explicitly
