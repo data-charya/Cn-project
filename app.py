@@ -361,7 +361,7 @@ def add_template():
         return redirect('/view/templates')
 
 
-@app.route('/subscribe')
+@app.route('/subscribe', methods=['GET', 'POST'])
 def sub_page():
     if (request.method == 'POST'):
         email = request.form.get('email')
@@ -377,7 +377,7 @@ def sub_page():
             return render_template('error.html')
 
 
-@app.route('/unsubscribe')
+@app.route('/unsubscribe', methods=['GET', 'POST'])
 def unsub_page():
     if (request.method == 'POST'):
         email = request.form.get('email')
