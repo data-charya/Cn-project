@@ -46,15 +46,15 @@ We highly recommend to read through the:<br>
 - [Deploying on Heroku](https://stackabuse.com/deploying-a-flask-application-to-heroku/).<br>
 - [Deploying on Netlify](https://www.netlify.com/blog/2016/10/27/a-step-by-step-guide-deploying-a-static-site-or-single-page-app/).<br>
 
-## Mockup & Demo 🛠️
+## Demo 🛠️
 
 <table><tr><td valign="top" width="50%">
 
-[![MAC](https://cdn.discordapp.com/attachments/701086382407549019/791974933790064660/Screenshot_2020-12-25_155448.png)]
+![MAC](https://cdn.discordapp.com/attachments/701086382407549019/791974933790064660/Screenshot_2020-12-25_155448.png)
 
 </td><td valign="top" width="50%">
 
-[![MAC](https://cdn.discordapp.com/attachments/701086382407549019/791974938377584640/Screenshot_2020-12-25_155428.png)]
+![MAC](https://cdn.discordapp.com/attachments/701086382407549019/791974938377584640/Screenshot_2020-12-25_155428.png)
 
 </td></tr></table>  
 
