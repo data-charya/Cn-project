@@ -360,13 +360,37 @@ def add_template():
         db.session.commit()
         return redirect('/view/templates')
 
-@app.route('/landingpage')
-def landing_page():
-    return render_template('landingpage.html')
+
+@app.route('/subscribe')
+def sub_page():
+    if (request.method == 'POST'):
+        email = request.form.get('email')
+        check = Subscriber.query.filter_by(email=email).first()
+        if(check==None):
+            entry = Subscriber(email=email, date=time, group_id=3)
+            db.session.add(entry)
+            db.session.commit()
+            flash('Newsletter subscribed successfully!', 'success')
+            return render_template('success.html')
+        else:
+            flash('You have already subscribed!', 'danger')
+            return render_template('error.html')
+
 
 @app.route('/unsubscribe')
 def unsub_page():
-    return render_template('unsubscribe.html')
+    if (request.method == 'POST'):
+        email = request.form.get('email')
+        delete_subscriber = Subscriber.query.filter_by(email=email).first()
+        if(delete_subscriber==None):
+            flash('We did not find your data in our database!', 'danger')
+            return render_template('error.html')
+        else:
+            db.session.delete(delete_subscriber)
+            db.session.commit()
+            flash('Newsletter unsubscribed  successfully!', 'success')
+            return render_template('success.html')
+
 
 @app.route('/')
 @login_required
