@@ -410,7 +410,10 @@ def unsub_page():
 @app.route('/')
 @login_required
 def dash_page():
-    return render_template('index.html')
+    glen = len(Group.query.order_by(Group.id).all())
+    slen = len(Subscriber.query.order_by(Subscriber.id).all())
+    tlen = len(Template.query.order_by(Template.id).all())
+    return render_template('index.html', glen=glen, slen=slen, tlen=tlen)
 
 @app.route('/view/users')
 @login_required
