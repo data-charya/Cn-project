@@ -371,8 +371,8 @@ def sub_page():
             entry = Subscriber(email=email, date=time, group_id=3)
             db.session.add(entry)
             db.session.commit()
-            flash('Newsletter subscribed successfully!', 'success')
-            return render_template('success.html')
+            # flash('Newsletter subscribed successfully!', 'success')
+            return render_template('thankyou.html')
         else:
             flash('You have already subscribed!', 'danger')
             return render_template('error.html')
@@ -390,7 +390,7 @@ def unsub_page():
             db.session.delete(delete_subscriber)
             db.session.commit()
             flash('Newsletter unsubscribed  successfully!', 'success')
-            return render_template('success.html')
+            return render_template('error.html')
 
 
 @app.route('/')
