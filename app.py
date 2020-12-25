@@ -137,7 +137,7 @@ def register_page():
             password = sha256_crypt.hash(password)
             response = Organization.query.filter_by(email=email).first()
             if(response==None):
-                entry = Organization(name=name, email=email, password=password, date=time, status=1)
+                entry = Organization(name=name, email=email, password=password, date=time, status=0)
                 db.session.add(entry)
                 db.session.commit()
                 flash("Now contact your organization head for account activation!", "success")
