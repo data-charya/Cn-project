@@ -5,7 +5,7 @@ from datetime import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from passlib.hash import sha256_crypt
-import json, random, string
+import json, random, string, psycopg2
 
 
 # TODO: USE JSON TO STORE URI & OTHER IMP STUFF
@@ -137,7 +137,7 @@ def register_page():
             password = sha256_crypt.hash(password)
             response = Organization.query.filter_by(email=email).first()
             if(response==None):
-                entry = Organization(name=name, email=email, password=password, date=time, status=0)
+                entry = Organization(name=name, email=email, password=password, date=time, status=1)
                 db.session.add(entry)
                 db.session.commit()
                 flash("Now contact your organization head for account activation!", "success")
