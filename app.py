@@ -114,7 +114,7 @@ def login():
     return render_template('login.html', json=json)
 
 @app.route('/logout')
-# @login_required
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
@@ -198,14 +198,14 @@ def forgot_password_page():
 
 
 @app.route('/view/groups')
-# @login_required
+@login_required
 def group_page():
     groups = Group.query.order_by(Group.id).all()
     # print(time)
     return render_template('group_list.html', groups=groups)
 
 @app.route('/new/group', methods=['POST'])
-# @login_required
+@login_required
 def submit_new_group():
     if(request.method=='POST'):
         group_name = request.form.get('groupname')
@@ -216,7 +216,7 @@ def submit_new_group():
     return redirect('/view/groups')
 
 @app.route("/delete/group/<int:id>", methods = ['GET'])
-# @login_required
+@login_required
 def delete_group(id):
     delete_group = Group.query.filter_by(id=id).first()
     db.session.delete(delete_group)
@@ -225,7 +225,7 @@ def delete_group(id):
     return redirect('/view/groups')
 
 @app.route("/activate/user/<int:id>", methods = ['GET'])
-# @login_required
+@login_required
 def activate_user(id):
     activate_user = Organization.query.filter_by(id=id).first()
     if(activate_user.status==1):
@@ -238,7 +238,7 @@ def activate_user(id):
     return redirect('/view/users')
 
 @app.route("/delete/user/<int:id>", methods = ['GET'])
-# @login_required
+@login_required
 def delete_user(id):
     delete_user = Organization.query.filter_by(id=id).first()
     db.session.delete(delete_user)
@@ -247,7 +247,7 @@ def delete_user(id):
     return redirect('/view/users')
 
 @app.route("/delete/template/<int:id>", methods = ['GET'])
-# @login_required
+@login_required
 def delete_template(id):
     delete_template = Template.query.filter_by(id=id).first()
     db.session.delete(delete_template)
@@ -256,7 +256,7 @@ def delete_template(id):
     return redirect('/view/templates')
 
 @app.route('/view/subscribers/<int:number>')
-# @login_required
+@login_required
 def subscribers_page(number):
     post = Subscriber.query.filter_by(group_id=number).all()
     response = Group.query.order_by(Group.id).all()
@@ -265,7 +265,7 @@ def subscribers_page(number):
     return render_template('group_members.html', post=post, response=response)
 
 @app.route('/new/subscribers', methods=['POST'])
-# @login_required
+@login_required
 def submit_new_subscribers():
     if(request.method=='POST'):
         email = request.form.get('email')
@@ -277,7 +277,7 @@ def submit_new_subscribers():
     return redirect('/view/subscribers/' + str(gid))
 
 @app.route('/delete/subscriber/<int:gid>/<int:number>', methods=['GET'])
-# @login_required
+@login_required
 def delete_subscriber(gid, number):
     delete_subscriber = Subscriber.query.filter_by(id=number).first()
     db.session.delete(delete_subscriber)
@@ -294,7 +294,7 @@ def delete_subscriber(gid, number):
 
 
 @app.route('/mail', methods=['POST', 'GET'])
-# @login_required
+@login_required
 def mail_page():
     if(request.method=='POST'):
         username = request.form.get('username')
@@ -328,7 +328,7 @@ def mail_page():
 
 
 @app.route("/use/template/<int:id>", methods = ['GET'])
-# @login_required
+@login_required
 def use_template(id):
     post = Template.query.filter_by(id=id).first()
     group = Group.query.order_by(Group.id).all()
@@ -336,20 +336,20 @@ def use_template(id):
     return render_template('mail2.html', group=group, template=mailtemp, post=post)
 
 @app.route("/use/group/<int:id>", methods = ['GET'])
-# @login_required
+@login_required
 def use_group(id):
     post = Group.query.filter_by(id=id).first()
     mailtemp = Template.query.order_by(Template.id).all()
     return render_template('mail3.html', template=mailtemp, post=post)
 
 @app.route('/view/templates')
-# @login_required
+@login_required
 def template_page():
     template = Template.query.order_by(Template.id).all()
     return render_template('templates.html', template=template)
 
 @app.route('/add/template', methods=['POST'])
-# @login_required
+@login_required
 def add_template():
     if (request.method == 'POST'):
         link = request.form.get('link')
@@ -369,12 +369,12 @@ def unsub_page():
     return render_template('unsubscribe.html')
 
 @app.route('/')
-# @login_required
+@login_required
 def dash_page():
     return render_template('index.html')
 
 @app.route('/view/users')
-# @login_required
+@login_required
 def users_page():
     users = Organization.query.order_by(Organization.id).all()
     return render_template('user_list.html', users=users)
