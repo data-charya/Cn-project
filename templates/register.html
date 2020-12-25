@@ -37,6 +37,16 @@
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
                             <form class="user" action="/register" method="post">
+
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                          {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message}}</div>
+                        {% endfor %}
+                       {% endif %}
+                      {% endwith %}
+
                                 <div class="form-group">
                                     <input type="text" name="name" class="form-control form-control-user" id="exampleInputEmail" placeholder="Name" required>
                                 </div>

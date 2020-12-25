@@ -23,12 +23,16 @@
          <span><i class="far text-warning fa-5x fa-frown"></i></span>
         
         <p class="display-3 mt-2 font-staatliches">Oops!</p>
-        
-      
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-           You should check in on some of those fields below.
-        </div>
-          
+
+                     {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                          {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message}}</div>
+                        {% endfor %}
+                       {% endif %}
+                      {% endwith %}
+
         <button class="btn btn-primary btn-block rounded-pill">HOME PAGE</button>
         
       </div>
