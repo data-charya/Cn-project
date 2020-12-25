@@ -18,7 +18,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Number of Groups</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ glen }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -35,8 +35,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Number of IDs</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">250</div>
+                                Number of subscribers</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ slen }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-id-badge fa-2x text-gray-300"></i>
@@ -53,8 +53,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Number of mail sent</div>
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50000</div>
+                                Number of templates</div>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tlen }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-envelope fa-2x text-gray-300"></i>
@@ -69,18 +69,27 @@
 
     <div class="row">
 
-        <center>
-        <div id=container>
-            Make 
-            <div id=flip>
-              <div><div>Vignesh Shetty</div></div>
-              <div><div>Raksharaj Shetty</div></div>
-              <div><div>Laureen Fernandes</div></div>
-              <div><div>Shanwill Pinto</div></div>
-            </div>
-            AweSoMe!
-        </div>
-        </center>        
+       <div class="container py-4" style="border-radius: 20px;width: auto;height: auto;">
+            <h1 class="h3 mb-0 text-gray-800" style="text-align: center;font-size: 50px;font-weight: 900;">Our cool Devs</h1>
+            <div class="container" style="border-radius: 20px;width: 600px;height: 250px;background: rgb(51, 51, 51);margin-top: 30px;">
+                <div class="container" style="width: 100vw;height: 1.5rem;"></div>
+                <div  class="home col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+		    	    <h3 id="resizing-h3" class="" >
+		    	    	<span>
+		    	    		<div class="stage">
+		    	    			<div class="cubespinner">
+		    	    				<div class="face1">Vignesh Shetty</div>
+		    	    				<div class="face2">Raksharaj Shetty</div>
+		    	    				<div class="face3">Laureen Fernandes</div>
+		    	    				<div class="face4">Shanwill Pinto</div>
+		    	    			</div>
+		    	    		</div>
+		    	    	</span>
+		    	    </h3>
+		        </div>
+            </div> 
+            
+       </div>     
     </div>
 
 

@@ -12,8 +12,18 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">
     Add Template
     </button>
-    
+<div style="padding-top: 10px">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                          {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message}}</div>
 
+                        {% endfor %}
+                       {% endif %}
+                      {% endwith %}
+    
+</div>
     <!-- Modal -->
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">

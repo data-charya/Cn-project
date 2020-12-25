@@ -3,8 +3,8 @@
   "favTitle": "Bulk Mailer",
   "favDescription": "Easily Create, Send & Analyze Your Bulk Email Campaigns. Reach the Inbox. Get The Best Value in Pro Email Marketing Tools. Get Started Now! High Delivery Rate. Powerful API.",
   "copyrightMessage": "2020 ARR",
-  "databaseUri": "sqlite:///bulkmailer.db",
-    "sendgridapi": "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",
+  "databaseUri": "Add postgres  uri here",
+    "sendgridapi": "add your api key here",
     "admin_email": "vigneshshetty.in@gmail.com",
     "site_url": "https://bulkmailer.cf"
 }

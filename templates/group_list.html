@@ -7,7 +7,18 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addgroup">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                          {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message}}</div>
+                        {% endfor %}
+                       {% endif %}
+                      {% endwith %}
+
+
+        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addgroup">
                     Add Group
                 </button>
                 <!-- Modal -->

@@ -5,7 +5,7 @@ from datetime import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from passlib.hash import sha256_crypt
-import json, random, string
+import json, random, string, psycopg2
 
 
 # TODO: USE JSON TO STORE URI & OTHER IMP STUFF
@@ -266,17 +266,21 @@ def submit_new_group():
         entry = Group(name=group_name, date=time)
         db.session.add(entry)
         db.session.commit()
-        # flash("New group added successfully!", "success")
+        flash("New group added successfully!", "success")
     return redirect('/view/groups')
 
 @app.route("/delete/group/<int:id>", methods = ['GET'])
 @login_required
 def delete_group(id):
     delete_group = Group.query.filter_by(id=id).first()
-    db.session.delete(delete_group)
-    db.session.commit()
-    # flash("Group deleted successfully!", "success")
-    return redirect('/view/groups')
+    if(delete_group.id==3):
+        flash("You can not delete default group!", 'warning')
+        return redirect('/view/groups')
+    else:
+        db.session.delete(delete_group)
+        db.session.commit()
+        flash("Group deleted successfully!", "danger")
+        return redirect('/view/groups')
 
 @app.route("/activate/user/<int:id>", methods = ['GET'])
 @login_required
@@ -284,10 +288,10 @@ def activate_user(id):
     activate_user = Organization.query.filter_by(id=id).first()
     if(activate_user.status==1):
         activate_user.status=0
-        # flash("User deactivated successfully!", "success")
+        flash("User deactivated successfully!", "warning")
     else:
         activate_user.status=1
-        # flash("User activated successfully!", "success")
+        flash("User activated successfully!", "success")
     db.session.commit()
     return redirect('/view/users')
 
@@ -296,12 +300,12 @@ def activate_user(id):
 def delete_user(id):
     delete_user = Organization.query.filter_by(id=id).first()
     if(delete_user.email==json["admin_email"]):
-        flash("You cannot delete administrator", "danger")
+        flash("You cannot delete administrator", "warning")
         return redirect('/view/users')
     else:
         db.session.delete(delete_user)
         db.session.commit()
-        flash("User deleted successfully!", "success")
+        flash("User deleted successfully!", "danger")
         return redirect('/view/users')
 
 @app.route("/delete/template/<int:id>", methods = ['GET'])
@@ -310,7 +314,7 @@ def delete_template(id):
     delete_template = Template.query.filter_by(id=id).first()
     db.session.delete(delete_template)
     db.session.commit()
-    # flash("Template deleted successfully!", "success")
+    flash("Template deleted successfully!", "danger")
     return redirect('/view/templates')
 
 @app.route('/view/subscribers/<int:number>')
@@ -331,7 +335,7 @@ def submit_new_subscribers():
         entry = Subscriber(email=email, date=time, group_id=gid)
         db.session.add(entry)
         db.session.commit()
-        # flash("New subscriber added successfully!", "success")
+        flash("New subscriber added successfully!", "success")
     return redirect('/view/subscribers/' + str(gid))
 
 @app.route('/delete/subscriber/<int:gid>/<int:number>', methods=['GET'])
@@ -340,7 +344,7 @@ def delete_subscriber(gid, number):
     delete_subscriber = Subscriber.query.filter_by(id=number).first()
     db.session.delete(delete_subscriber)
     db.session.commit()
-    # flash("subscriber deleted successfully!", "success")
+    flash("Subscriber deleted successfully!", "danger")
     return redirect('/view/subscribers/'+str(gid))
 
     # post = Subscribers.query.filter_by(gid=1).all()
@@ -375,12 +379,13 @@ def mail_page():
         try:
             sg = SendGridAPIClient(json['sendgridapi'])
             response = sg.send(message)
-            # flash("Mail has been sent successfully!", "success")
+            flash("Mail has been sent successfully!", "success")
             # print(response.status_code)
             # print(response.body)
             # print(response.headers)
         except Exception as e:
-            print("Error!")
+            # print("Error!")
+            flash("Error due to invalid details entered!", "danger")
     group = Group.query.order_by(Group.id).all()
     mailtemp = Template.query.order_by(Template.id).all()
     return render_template('mail.html', group=group, template=mailtemp)
@@ -417,6 +422,7 @@ def add_template():
         entry = Template(name=name, date=time, content=editordata, link=link)
         db.session.add(entry)
         db.session.commit()
+        flash('Template added successfully!', 'success')
         return redirect('/view/templates')
 
 
@@ -454,7 +460,10 @@ def unsub_page():
 @app.route('/')
 @login_required
 def dash_page():
-    return render_template('index.html')
+    glen = len(Group.query.order_by(Group.id).all())
+    slen = len(Subscriber.query.order_by(Subscriber.id).all())
+    tlen = len(Template.query.order_by(Template.id).all())
+    return render_template('index.html', glen=glen, slen=slen, tlen=tlen)
 
 @app.route('/view/users')
 @login_required
