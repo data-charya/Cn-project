@@ -8,7 +8,6 @@ from passlib.hash import sha256_crypt
 import json, random, string, psycopg2
 
 
-# TODO: USE JSON TO STORE URI & OTHER IMP STUFF
 #load import.json file containing database uri, admin email and other impt info
 with open('import.json', 'r') as c:
     json = json.load(c)["jsondata"]
@@ -30,6 +29,7 @@ def load_user(user_id):
     return Organization.query.get(user_id)
 
 '''DATABASE MODELS'''
+
 #represents a group of users to whom a specific email can be sent
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -61,6 +61,7 @@ class Organization(db.Model, UserMixin):
     password = db.Column(db.String(500), nullable=False)
     status = db.Column(db.Integer , nullable=False)
     date = db.Column(db.String(50), nullable=False)
+
 '''END OF DATABASE MODELS'''
 
 #generate a random 8 lettered password for forgot password
@@ -73,33 +74,6 @@ time = x.strftime("%c")
 
 #domain name
 domain='@bulkmailer.cf'
-#TODO: IDEA IN IT
-
-    # post = Subscribers.query.filter_by(gid=1).all()
-    # print(post)
-    # elist=[]
-    # for post in post:
-    #     elist = elist + [post.email]
-    # print(elist)
-
-#TODO: MAIL CONFIG PART
-
-    # subject = " Some String "
-    # content = "<html> </html>"
-    # message = Mail(
-    #     from_email=('something@bulkmailer.cf', 'Some Name'),
-    #     to_emails="to mail",
-    #     subject=subject,
-    #     html_content=content)
-    # try:
-    #     sg = SendGridAPIClient(json['sendgridapi'])
-    #     response = sg.send(message)
-    #     # flash("You will receive a mail shortly. Password rested successfully!", "success")
-    #     # print(response.status_code)
-    #     # print(response.body)
-    #     # print(response.headers)
-    # except Exception as e:
-    #     print("Error!")
 
 #login route
 @app.route('/login', methods = ['GET', 'POST'])
@@ -261,7 +235,7 @@ def group_page():
 def submit_new_group():
     #check if form has been submitted
     if(request.method=='POST'):
-        #get the group name
+        #add the group with the entered name to the db and redirect to view groups page
         group_name = request.form.get('groupname')
         entry = Group(name=group_name, date=time)
         db.session.add(entry)
@@ -269,128 +243,161 @@ def submit_new_group():
         flash("New group added successfully!", "success")
     return redirect('/view/groups')
 
+#route to delete group with specified id
 @app.route("/delete/group/<int:id>", methods = ['GET'])
 @login_required
 def delete_group(id):
+    #get the record of the group to be deleted
     delete_group = Group.query.filter_by(id=id).first()
-    if(delete_group.id==3):
+    if(delete_group.id == 3):
+        #if default group flash an error msg
         flash("You can not delete default group!", 'warning')
         return redirect('/view/groups')
     else:
+        #otherwise, delete the record and redirect to view groups page
         db.session.delete(delete_group)
         db.session.commit()
         flash("Group deleted successfully!", "danger")
         return redirect('/view/groups')
 
+#route to activate/deactivate a user's account
 @app.route("/activate/user/<int:id>", methods = ['GET'])
 @login_required
 def activate_user(id):
+    #get the record of the user with the specified id
     activate_user = Organization.query.filter_by(id=id).first()
-    if(activate_user.status==1):
-        activate_user.status=0
+    if(activate_user.status == 1):
+        #if user's status is active then deactivate account
+        activate_user.status = 0
         flash("User deactivated successfully!", "warning")
     else:
-        activate_user.status=1
+        #otherwise, activate account
+        activate_user.status = 1
         flash("User activated successfully!", "success")
     db.session.commit()
+    #redirect to view users page
     return redirect('/view/users')
 
+#route to delete a user
 @app.route("/delete/user/<int:id>", methods = ['GET'])
 @login_required
 def delete_user(id):
+    #get the record of the user with the specified id
     delete_user = Organization.query.filter_by(id=id).first()
-    if(delete_user.email==json["admin_email"]):
+    #if user tries to delete admin, flash an error
+    if(delete_user.email == json["admin_email"]):
         flash("You cannot delete administrator", "warning")
-        return redirect('/view/users')
-    else:
+    #otherwise check if user is admin
+    elif current_user.email == json["admin_email"]:
+        #delete specified user
         db.session.delete(delete_user)
         db.session.commit()
         flash("User deleted successfully!", "danger")
-        return redirect('/view/users')
+    else:
+        #flash an error msg that only admins can delete users
+        flash('Only Admin can delete users!', 'warning')
+    #redirect to view users page
+    return redirect('/view/users')
 
+#route to delete a template
 @app.route("/delete/template/<int:id>", methods = ['GET'])
 @login_required
 def delete_template(id):
+    #get the record of the template with the specified id and delete it
     delete_template = Template.query.filter_by(id=id).first()
-    db.session.delete(delete_template)
-    db.session.commit()
-    flash("Template deleted successfully!", "danger")
+    #check if template exists
+    if delete_template:
+        #delete template
+        db.session.delete(delete_template)
+        db.session.commit()
+        flash("Template deleted successfully!", "danger")
+    else:
+        #flash an error msg that template doesn't exist
+        flash('Template does not exist!', 'danger')
     return redirect('/view/templates')
 
+#route to view subscribers of a particular group
 @app.route('/view/subscribers/<int:number>')
 @login_required
 def subscribers_page(number):
+    #get the records of all the subscribers of the group and display
     post = Subscriber.query.filter_by(group_id=number).all()
     response = Group.query.order_by(Group.id).all()
-    # print(response)
-    # print(post)
     return render_template('group_members.html', post=post, response=response)
 
+#route to add a new subscriber
 @app.route('/new/subscribers', methods=['POST'])
 @login_required
 def submit_new_subscribers():
     if(request.method=='POST'):
+        #using the data entered, create a subscriber in the specified group and add to db
         email = request.form.get('email')
         gid = request.form.get('gid')
         entry = Subscriber(email=email, date=time, group_id=gid)
         db.session.add(entry)
         db.session.commit()
         flash("New subscriber added successfully!", "success")
+    #redirect to view subscribers of the group page
     return redirect('/view/subscribers/' + str(gid))
 
+#route to delete a subscriber
 @app.route('/delete/subscriber/<int:gid>/<int:number>', methods=['GET'])
 @login_required
 def delete_subscriber(gid, number):
+    #get the record of the subscriber to be deleted
     delete_subscriber = Subscriber.query.filter_by(id=number).first()
-    db.session.delete(delete_subscriber)
-    db.session.commit()
-    flash("Subscriber deleted successfully!", "danger")
+    #check if subscriber exists
+    if delete_subscriber:
+        #delete subscriber
+        db.session.delete(delete_subscriber)
+        db.session.commit()
+        flash("Subscriber deleted successfully!", "danger")
+    else:
+        #flash an error msg
+        flash('Subscriber not found!', 'danger')
+    #redirect to view subscribers page
     return redirect('/view/subscribers/'+str(gid))
 
-    # post = Subscribers.query.filter_by(gid=1).all()
-    # print(post)
-    # elist=[]
-    # for post in post:
-    #     elist = elist + [post.email]
-    # print(elist)
-
-
+#route to compose and send the bulk email
 @app.route('/mail', methods=['POST', 'GET'])
 @login_required
 def mail_page():
+    #check if form has been submitted
     if(request.method=='POST'):
+        #get the email fields entered
         username = request.form.get('username')
         name = request.form.get('name')
         subject = request.form.get('subject')
         group = request.form.get('group')
         html_content = request.form.get('editordata')
         html_content = html_content + '''<table role="presentation" cellpadding="0" cellspacing="0" style="background:#f0f0f0;font-size:0px;width:100%;" border="0"><tbody><tr><td><div style="margin:0px auto;max-width:600px;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:0px 0px 0px 0px;"><div class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 98px 0px 98px;" align="center"><div style="cursor:auto;color:#777777;font-family:Helvetica, sans-serif;font-size:15px;line-height:22px;text-align:center;"><p><span style="font-size:12px;"><a href="https://bulkmailer.cf" style="color: #555555;">TERMS OF SERVICE</a> | <a href="https://bulkmailer.cf" style="color: #555555;">PRIVACY POLICY</a><br>© 2020 Bulk Mailer<br><a href="https://bulkmailer.cf/unsubscribe" style="color: #555555;">UNSUBSCRIBE</a></span></p></div></td></tr></tbody></table></div></td></tr></tbody></table></div></td></tr></tbody></table>'''
-        fromemail = username+domain
+        #generate the from email
+        fromemail = username + domain
+        #generate the mail list by extracting the emails of all the subscribers in the specified group
         mailobj = Subscriber.query.filter_by(group_id=group).all()
         maillist = []
         for mailobj in mailobj:
             maillist = maillist + [mailobj.email]
-        # print(maillist)
+        #generate the mail
         message = Mail(
             from_email=(fromemail, name),
             to_emails=maillist,
             subject=subject,
             html_content=html_content)
         try:
+            #send the email
             sg = SendGridAPIClient(json['sendgridapi'])
             response = sg.send(message)
             flash("Mail has been sent successfully!", "success")
-            # print(response.status_code)
-            # print(response.body)
-            # print(response.headers)
         except Exception as e:
-            # print("Error!")
+            #flash an error msg if exception occurs
             flash("Error due to invalid details entered!", "danger")
+    #get all the groups and templates in the db to display to the user
     group = Group.query.order_by(Group.id).all()
     mailtemp = Template.query.order_by(Template.id).all()
     return render_template('mail.html', group=group, template=mailtemp)
 
-
+#route to use a template
 @app.route("/use/template/<int:id>", methods = ['GET'])
 @login_required
 def use_template(id):
