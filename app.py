@@ -446,32 +446,43 @@ def add_template():
         flash('Template added successfully!', 'success')
         return redirect('/view/templates')
 
-#route to 
+#api to subscribe using user's email
 @app.route('/subscribe', methods=['GET', 'POST'])
 def sub_page():
+    #if form has been submitted
     if (request.method == 'POST'):
+        #get the user's email
         email = request.form.get('email')
+        #check if the subscriber already exists in the db
         check = Subscriber.query.filter_by(email=email).first()
         if not check:
+            #if subscriber doesn't exist, create a record (add user to default group)
             entry = Subscriber(email=email, date=time, group_id=3)
+            #commit to the db
             db.session.add(entry)
             db.session.commit()
             # flash('Newsletter subscribed successfully!', 'success')
             return render_template('thankyou.html')
         else:
+            #if user exists then flash an error msg
             flash('You have already subscribed!', 'danger')
             return render_template('error.html')
 
-
+#api to unsubscribe from a group
 @app.route('/unsubscribe', methods=['GET', 'POST'])
 def unsub_page():
+    #check if form has been submitted
     if (request.method == 'POST'):
+        #get the user's email
         email = request.form.get('email')
+        #get the subcriber's record from the db
         delete_subscriber = Subscriber.query.filter_by(email=email).first()
         if not delete_subscriber:
+            #if subscriber doesn't exist, flash an error msg
             flash('We did not find your data in our database!', 'danger')
             return render_template('error.html')
         else:
+            #if subscriber exists, delete from db
             db.session.delete(delete_subscriber)
             db.session.commit()
             flash('Newsletter unsubscribed  successfully!', 'success')
@@ -502,6 +513,6 @@ def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
-#run the app if it is the main app
+#execute if file is the main file i.e., file wasn't imported
 if __name__ == '__main__':
     app.run(debug=True)
