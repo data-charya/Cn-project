@@ -401,44 +401,58 @@ def mail_page():
 @app.route("/use/template/<int:id>", methods = ['GET'])
 @login_required
 def use_template(id):
+    #get the record of the template to be used
     post = Template.query.filter_by(id=id).first()
+    #get all groups and templates to be displayed
     group = Group.query.order_by(Group.id).all()
     mailtemp = Template.query.order_by(Template.id).all()
+    #redirect to mail with the specified template in the content
     return render_template('mail2.html', group=group, template=mailtemp, post=post)
 
+#route to select a group
 @app.route("/use/group/<int:id>", methods = ['GET'])
 @login_required
 def use_group(id):
+    #get the record of the group to whom the email has to be sent
     post = Group.query.filter_by(id=id).first()
+    #get all the templates to display
     mailtemp = Template.query.order_by(Template.id).all()
+    #redirect to mail with the specified group as the recipient
     return render_template('mail3.html', template=mailtemp, post=post)
 
+#route to view all the templates
 @app.route('/view/templates')
 @login_required
 def template_page():
+    #get the records of all the templates and display them
     template = Template.query.order_by(Template.id).all()
     return render_template('templates.html', template=template)
 
+#route to add a template
 @app.route('/add/template', methods=['POST'])
 @login_required
 def add_template():
+    #if form has been submitted
     if (request.method == 'POST'):
+        #get the data in the form fields
         link = request.form.get('link')
         name = request.form.get('name')
         editordata = request.form.get('editordata')
+        #use the data to create a record and add it to the db
         entry = Template(name=name, date=time, content=editordata, link=link)
         db.session.add(entry)
         db.session.commit()
+        #flash a msg and redirect to view all templates page
         flash('Template added successfully!', 'success')
         return redirect('/view/templates')
 
-
+#route to 
 @app.route('/subscribe', methods=['GET', 'POST'])
 def sub_page():
     if (request.method == 'POST'):
         email = request.form.get('email')
         check = Subscriber.query.filter_by(email=email).first()
-        if(check==None):
+        if not check:
             entry = Subscriber(email=email, date=time, group_id=3)
             db.session.add(entry)
             db.session.commit()
@@ -454,7 +468,7 @@ def unsub_page():
     if (request.method == 'POST'):
         email = request.form.get('email')
         delete_subscriber = Subscriber.query.filter_by(email=email).first()
-        if(delete_subscriber==None):
+        if not delete_subscriber:
             flash('We did not find your data in our database!', 'danger')
             return render_template('error.html')
         else:
@@ -464,24 +478,30 @@ def unsub_page():
             return render_template('error.html')
 
 
+#main page
 @app.route('/')
 @login_required
 def dash_page():
-    glen = len(Group.query.order_by(Group.id).all())
-    slen = len(Subscriber.query.order_by(Subscriber.id).all())
-    tlen = len(Template.query.order_by(Template.id).all())
+    #get the number of groups, subscribers, and templates; display them to the user
+    glen = len(Group.query.all())
+    slen = len(Subscriber.query.all())
+    tlen = len(Template.query.all())
     return render_template('index.html', glen=glen, slen=slen, tlen=tlen)
 
+#route to view list of users
 @app.route('/view/users')
 @login_required
 def users_page():
+    #get the records of all the users and display to the user
     users = Organization.query.order_by(Organization.id).all()
     return render_template('user_list.html', users=users)
 
+#route to handle page not found
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
+#run the app if it is the main app
 if __name__ == '__main__':
     app.run(debug=True)
