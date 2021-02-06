@@ -75,7 +75,7 @@ If you can help us with these. Please don't hesitate to open a [Pull Request](ht
 
 <table>
   <tr>
-    <td align="center"><a href="https://www.linkedin.com/in/vigneshshettyin/"><img src="https://avatars3.githubusercontent.com/u/61915786?s=460&u=75ed488de9581ae3cfe3aa6515e404314308dfbe&v=4" width="100px;" alt=""/><br /><sub><b>Vignesh Shetty</b></sub></a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/vigneshshettyin/"><img src="https://avatars.githubusercontent.com/u/77713888?s=460&u=28a461a4ae6826d8daa5074823b7753a0385e2fa&v=4" width="100px;" alt=""/><br /><sub><b>Vignesh Shetty</b></sub></a></td>
        <td align="center"><a href="https://www.linkedin.com/in/shanwill-pinto-b286b7184/"><img src="https://avatars1.githubusercontent.com/u/62848565?s=400&u=720456e69554e95661703a6ad9360c92a715b478&v=4" width="100px;" alt="Shanwill Pinto"/><br /><sub><b>Shanwill Pinto</b></sub></a></td>
     <td align="center"><a href="https://www.linkedin.com/in/raksharaj-shetty-7361321b2/"><img src="https://cdn.discordapp.com/attachments/708550144827719811/791978186857775104/IMG_8698.jpg" width="100px;" alt="Raksharaj Shetty"/><br /><sub><b>Raksharaj Shetty</b></sub></a></td>
     <td align="center"><a href="https://www.linkedin.com/in/laureenfernandes/"><img src="https://media-exp1.licdn.com/dms/image/C5603AQGATxe6tJVqnQ/profile-displayphoto-shrink_200_200/0/1595159549102?e=1614211200&v=beta&t=3-OAzS9NEiHAm8UWX1kavGZytpx2P5ENT5-E4b6FqrY" width="100px;" alt="Laureen Fernandes"/><br /><sub><b>Laureen Fernandes</b></sub></a></td>
